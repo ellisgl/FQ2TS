@@ -1,0 +1,20 @@
+{
+  "chance": 30,
+  "tiers": [
+    { "belowExp": 500, "pick": 3 },
+    { "belowExp": 5000, "pick": 6 },
+    { "belowExp": 10000, "pick": 10 }
+  ],
+  "monsters": [
+    { "name": "Tree Frog", "hp": 15, "attack": 15, "gold": 15, "exp": 11, "says": "Want some poison? Tree Frog Gasps at you!" },
+    { "name": "Woodpecker", "hp": 25, "attack": 25, "gold": 25, "exp": 25, "says": "I need to peck something. How about you smirks Woodpecker!" },
+    { "name": "Owl", "hp": 30, "attack": 30, "gold": 30, "exp": 32, "says": "Hello. And what is your name woos the Owl!" },
+    { "name": "Leopard", "hp": 40, "attack": 40, "gold": 40, "exp": 42, "says": "Damn. I need a new head.  Yours looks perfect!" },
+    { "name": "Wolf", "hp": 45, "attack": 45, "gold": 45, "exp": 57, "says": "MMMMM. Fresh meat!!! Growls Wolf!" },
+    { "name": "Bear", "hp": 55, "attack": 55, "gold": 55, "exp": 69, "says": "I need some hair laughs Bear!" },
+    { "name": "Tree Elf", "hp": 65, "attack": 65, "gold": 65, "exp": 73, "says": "Heya baby... Come ere... whispers the Elf!" },
+    { "name": "Cheetah", "hp": 85, "attack": 85, "gold": 85, "exp": 81, "says": "Got any cheese?  I have a strange craving for cheese!" },
+    { "name": "Tiger", "hp": 95, "attack": 95, "gold": 95, "exp": 94, "says": "Grrr!!! Get the hell out of here yells Tiger!" },
+    { "name": "Lion", "hp": 105, "attack": 105, "gold": 105, "exp": 106, "says": "As the king I sentence you to death growls Lion!" }
+  ]
+}

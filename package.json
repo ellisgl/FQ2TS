@@ -1,0 +1,21 @@
+{
+  "name": "final-quest-2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun fq2.ts",
+    "debug": "bun fq2.ts --debug",
+    "edit": "bun tools/edit.ts",
+    "generate": "bun tools/generate.ts",
+    "view": "bun tools/view.ts",
+    "test": "bun test",
+    "coverage": "bun test --coverage",
+    "check": "tsc && eslint . && bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "eslint": "^10.13.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0"
+  }
+}
