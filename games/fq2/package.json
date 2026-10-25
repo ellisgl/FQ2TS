@@ -9,8 +9,5 @@
     "@fq2js/engine": "workspace:*",
     "@fq2js/server": "workspace:*",
     "@fq2js/tools": "workspace:*"
-  },
-  "devDependencies": {
-    "ssh2": "1.17.0"
   }
 }

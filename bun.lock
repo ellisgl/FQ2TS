@@ -22,9 +22,6 @@
         "@fq2js/server": "workspace:*",
         "@fq2js/tools": "workspace:*",
       },
-      "devDependencies": {
-        "ssh2": "1.17.0",
-      },
     },
     "packages/engine": {
       "name": "@fq2js/engine",

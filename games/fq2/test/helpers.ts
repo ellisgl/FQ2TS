@@ -4,15 +4,14 @@
 
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
-import type { Key } from '@fq2js/engine/terminal';
 import { World } from '@fq2js/engine/world';
-import { Game, readConfig, type Config, type Content } from '@fq2js/engine/game';
+import { readConfig, type Config, type Game } from '@fq2js/engine/game';
 import { readBestiary, type Bestiary } from '@fq2js/engine/combat';
 import { readItems, type ItemCatalogue } from '@fq2js/engine/items';
-import { Saves } from '@fq2js/engine/saves';
 import { ScriptContext } from '@fq2js/engine/script';
-import type { FlagRecord, Player } from '@fq2js/engine/player';
-import { FakeTerminal, tempDir, type Step } from '@fq2js/engine/testing';
+import type { Player } from '@fq2js/engine/player';
+import type { FakeTerminal } from '@fq2js/engine/testing';
+import { makeGameWith, type GameSetup } from '@fq2js/engine/fixture';
 import content from '../content/index.ts';
 import { start, type Flags } from '../content/start.ts';
 
@@ -44,45 +43,10 @@ export function newPlayer(changes: Partial<Player<Flags>> = {}, flags: Partial<F
     return player;
 }
 
-interface GameSetup<F extends FlagRecord> {
-    steps?: readonly Step[];
-    fallback?: Key;
-    player?: Player<F>;
-    world?: World;
-    saves?: Saves;
-    debug?: boolean;
-    monsters?: Bestiary;
-    items?: ItemCatalogue;
-    autosave?(player: Player<F>): void;
-    screensaver?: boolean;
-    // No save slots (like a server's games).
-    noSaves?: boolean;
-}
-
-export function makeGameWith<F extends FlagRecord>(
-    gameContent: Content<F>,
-    { steps = [], fallback, player, world, saves, debug = false, monsters = bestiary, items = itemCatalogue, autosave, screensaver, noSaves = false }: GameSetup<F> = {},
-): { game: Game<F>; term: FakeTerminal } {
-    const term = new FakeTerminal(steps, fallback === undefined ? {} : { fallback });
-    const game = new Game({
-        term,
-        world: world ?? gameWorld(),
-        config,
-        monsters,
-        items,
-        content: gameContent,
-        ...(noSaves ? {} : { saves: saves ?? new Saves(tempDir()) }),
-        ...(screensaver === undefined ? {} : { screensaver }),
-        debug,
-        ...(player ? { player } : {}),
-        ...(autosave ? { autosave } : {}),
-    });
-    return { game, term };
-}
-
-// The real game, with a player already in it.
+// A game of the real content, data and world (unless told otherwise), on a
+// scripted terminal, with a player already in it.
 export function makeGame(setup: GameSetup<Flags> = {}): { game: Game<Flags>; term: FakeTerminal } {
-    return makeGameWith(content, { player: newPlayer(), ...setup });
+    return makeGameWith(content, { player: newPlayer(), world: gameWorld(), config, monsters: bestiary, items: itemCatalogue, ...setup });
 }
 
 // A script context in the real game: what content scripts get as `g`.
