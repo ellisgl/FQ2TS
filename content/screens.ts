@@ -276,8 +276,11 @@ export const screens: Content<Flags>['screens'] = {
                     return;
                 }
                 g.flags.foundMinigun = true;
+                // Like the original, the player takes it up at once (their old
+                // weapon goes in their pack).
                 g.give('minigun');
-                g.write('{lightcyan}You find a Minigun on the table! {gray}(I to equip it)');
+                g.equip('minigun');
+                g.write('{lightcyan}You find a Minigun on the table, and arm yourself with it!');
             },
         },
     },
