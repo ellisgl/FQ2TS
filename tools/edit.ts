@@ -9,6 +9,8 @@ import { Terminal } from "../engine/terminal.ts";
 import { World } from "../engine/world.ts";
 import { Editor } from "./editor/editor.ts";
 import { contentTriggers } from "./view.ts";
+import { readBestiary } from "../engine/combat.ts";
+import { readFileSync } from "node:fs";
 
 const USAGE = `Usage: bun tools/edit.ts [options]
 
@@ -36,6 +38,7 @@ export async function main(args: readonly string[], term: Terminal = new Termina
     term,
     world,
     triggers: contentTriggers(),
+    encounterTables: readBestiary(JSON.parse(readFileSync(join(import.meta.dir, "..", "data", "monsters.json"), "utf8"))).tableNames(),
     save: (w) => {
       const result = w.save(dir);
       saved.push(...result.written, ...result.deleted);

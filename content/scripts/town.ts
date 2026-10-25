@@ -137,7 +137,7 @@ export async function roshi(g: G): Promise<void> {
   }
   if ((await g.choice(["Challenge Him", "Leave"])) !== 0) return;
 
-  const result = await g.fight({ name: "Master Roshi", says: "Beat me if you can... Loser!!", hp: 350, attack: 50, gold: 1000, exp: 100 });
+  const result = await g.fight(g.monster("master-roshi"));
   g.cls();
   if (result !== "won") {
     g.print("{green}Sorry... You loose.. try again later...");
