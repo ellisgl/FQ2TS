@@ -22,6 +22,10 @@ bun run debug          # or: bun fq2.ts --debug   (position display, S = setting
 
 Saved games go to `saves/` as JSON. Set `FQ2_COLORS=16` if your terminal lacks true-color support.
 
+While exploring: arrows (or 8 4 6 2) walk, **I** or **V** shows your stats and inventory (pick an item to use, equip or drop it), **M** the world map, **B** the last messages, **R** redraws the screen, **?** lists the keys and **Esc** goes back to the title menu.
+
+Items are defined in `data/items.json` and monsters and encounter tables in `data/monsters.json`.
+
 ## Tools
 
 New versions of the original's map tools, working on `data/maps/` directly:
@@ -55,14 +59,14 @@ bun test               # just the tests
 bun run coverage       # tests with a coverage report
 ```
 
-The code avoids `any`, `as` casts and `!` assertions. Lookups that can only miss because of a bug go through `at()`/`cellAt()` in [engine/assert.ts](engine/assert.ts), which throw. JSON files and saved games are checked when they're loaded ([engine/validate.ts](engine/validate.ts)), so a bad file fails with the path to the bad value, e.g. `monsters.json.monsters[1].hp: expected a whole number`.
+Code style follows the PER Coding Style (adapted from PHP): 4-space indents, single quotes, braces on every block, explicit `public`/`private`, no trailing whitespace. ESLint enforces it (`bunx eslint --fix .` fixes most of it). The code avoids `any`, `as` casts and `!` assertions. Lookups that can only miss because of a bug go through `at()`/`cellAt()` in [engine/assert.ts](engine/assert.ts), which throw. JSON files and saved games are checked when they're loaded ([engine/validate.ts](engine/validate.ts)), so a bad file fails with the path to the bad value, e.g. `monsters.json.monsters[1].hp: expected a whole number`.
 
 ## Layout
 
 - [fq2.ts](fq2.ts) is the entry point.
 - [engine/](engine/) is the game engine: terminal, screen, text markup, world, combat, saves, and the `g` API that scripts use ([engine/script.ts](engine/script.ts)).
 - [content/](content/) is the game itself: every screen's triggers and all the scripts, written as async TypeScript functions (converted from the original REF files). [content/start.ts](content/start.ts) holds the starting player and the `Flags` type, so a misspelled flag is a compile error.
-- [data/](data/) holds the game data as JSON: `config.json` (from VARS.DAT), `monsters.json` (from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT).
+- [data/](data/) holds the game data as JSON: `config.json` (from VARS.DAT), `items.json` (the item catalogue), `monsters.json` (monsters and encounter tables, from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT, now with screen names and terrain).
 - [tools/](tools/) holds the map tools (see Tools above).
 - [test/](test/) holds the unit tests (`bun:test`). [test/helpers.ts](test/helpers.ts) has a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, plus small worlds and players to test with. [test/content/data.test.ts](test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
 - [FQ2.DOC](FQ2.DOC) is the original game manual (v0.94).
