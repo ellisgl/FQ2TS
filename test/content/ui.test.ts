@@ -200,3 +200,20 @@ describe('a new game', () => {
         expect(g.sex).toBe('male');
     });
 });
+
+test('names with braces show as they are, in the status line and the inventory', async () => {
+    const player = newPlayer({ name: '{blink red}Bob' });
+    const screen = new Screen();
+    draw(screen, statusLine(player, config));
+    expect(row(screen, 1)).toContain('-- {blink red}Bob -- HP');
+    const { g, term } = scriptContext({
+        player,
+        steps: [
+            () => {
+                expect(row(term.screen, 1).trim()).toBe("{blink red}Bob's Inventory");
+                return 'escape';
+            },
+        ],
+    });
+    await inventory(g);
+});
