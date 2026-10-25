@@ -1,4 +1,5 @@
 // What happens when a new game starts.
+import { escapeMarkup } from '../engine/text.ts';
 import type { G } from './start.ts';
 
 // The longest name the status line has room for.
@@ -22,7 +23,7 @@ export async function newGame(g: G): Promise<void> {
 
     g.cls();
     g.print(
-        `{white}${g.name}{green}...`,
+        `{white}${escapeMarkup(g.name)}{green}...`,
         '',
         `{green}You wake up early, put on your {lightmagenta}${g.item('vest').name}{green}, and strap your {lightmagenta}${g.item('stick').name}{green} to`,
         '{green}your back.',
