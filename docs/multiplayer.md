@@ -98,7 +98,7 @@ Each phase ends playable, tested and committed.
     can be sent after a minute, and one connection can send 5 emails.
     Mail goes through SMTP (nodemailer), or into the log without
     `--smtp-host`.
-  - The database's layout is a list of steps in `server/migrations.ts`;
+  - The database's layout is a list of steps in `packages/server/src/migrations.ts`;
     opening a database runs the steps it hasn't had (SQLite's
     `user_version` counts them), each in a transaction, and a database
     from a newer server is refused. To change the layout, add a step.

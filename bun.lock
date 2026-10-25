@@ -4,10 +4,6 @@
   "workspaces": {
     "": {
       "name": "final-quest-2",
-      "dependencies": {
-        "nodemailer": "^8.0.11",
-        "ssh2": "1.17.0",
-      },
       "devDependencies": {
         "@stylistic/eslint-plugin": "^2.9.0",
         "@types/bun": "^1.4.4",
@@ -16,6 +12,38 @@
         "eslint": "^10.13.0",
         "typescript": "^6.0.3",
         "typescript-eslint": "^8.72.0",
+      },
+    },
+    "games/fq2": {
+      "name": "final-quest-2",
+      "version": "0.94.4",
+      "dependencies": {
+        "@fq2js/engine": "workspace:*",
+        "@fq2js/server": "workspace:*",
+        "@fq2js/tools": "workspace:*",
+      },
+      "devDependencies": {
+        "ssh2": "1.17.0",
+      },
+    },
+    "packages/engine": {
+      "name": "@fq2js/engine",
+      "version": "0.1.0",
+    },
+    "packages/server": {
+      "name": "@fq2js/server",
+      "version": "0.1.0",
+      "dependencies": {
+        "@fq2js/engine": "workspace:*",
+        "nodemailer": "^8.0.11",
+        "ssh2": "1.17.0",
+      },
+    },
+    "packages/tools": {
+      "name": "@fq2js/tools",
+      "version": "0.1.0",
+      "dependencies": {
+        "@fq2js/engine": "workspace:*",
       },
     },
   },
@@ -40,6 +68,12 @@
     "@eslint/object-schema": ["@eslint/object-schema@3.0.5", "", {}, "sha512-vqTaUEgxzm+YDSdElad6PiRoX4t8VGDjCtt05zn4nU810UIx/uNEV7/lZJ6KwFThKZOzOxzXy48da+No7HZaMw=="],
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.7.3", "", { "dependencies": { "@eslint/core": "^1.2.1", "levn": "^0.4.1" } }, "sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q=="],
+
+    "@fq2js/engine": ["@fq2js/engine@workspace:packages/engine"],
+
+    "@fq2js/server": ["@fq2js/server@workspace:packages/server"],
+
+    "@fq2js/tools": ["@fq2js/tools@workspace:packages/tools"],
 
     "@humanfs/core": ["@humanfs/core@0.19.2", "", { "dependencies": { "@humanfs/types": "^0.15.0" } }, "sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA=="],
 
@@ -146,6 +180,8 @@
     "fdir": ["fdir@6.5.0", "", { "peerDependencies": { "picomatch": "^3 || ^4" }, "optionalPeers": ["picomatch"] }, "sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg=="],
 
     "file-entry-cache": ["file-entry-cache@11.1.5", "", { "dependencies": { "flat-cache": "^6.1.23" } }, "sha512-+PFTHITI08JIGhnNpGNI8T8inUpgZfk3GNEqfT9R2zZV2iFXg3CvqzSl/uEhs7TSGujYRELEANyDvS8Fj7+S7Q=="],
+
+    "final-quest-2": ["final-quest-2@workspace:games/fq2"],
 
     "find-up": ["find-up@5.0.0", "", { "dependencies": { "locate-path": "^6.0.0", "path-exists": "^4.0.0" } }, "sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng=="],
 

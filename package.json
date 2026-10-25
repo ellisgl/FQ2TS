@@ -1,14 +1,18 @@
 {
-  "name": "final-quest-2",
+  "name": "fq2js",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "games/*"
+  ],
   "scripts": {
-    "start": "bun fq2.ts",
-    "debug": "bun fq2.ts --debug",
-    "server": "bun server.ts",
-    "edit": "bun tools/edit.ts",
-    "generate": "bun tools/generate.ts",
-    "view": "bun tools/view.ts",
+    "start": "bun games/fq2/fq2.ts",
+    "debug": "bun games/fq2/fq2.ts --debug",
+    "server": "bun games/fq2/server.ts",
+    "edit": "bun games/fq2/tools/edit.ts",
+    "generate": "bun games/fq2/tools/generate.ts",
+    "view": "bun games/fq2/tools/view.ts",
     "test": "bun test",
     "coverage": "bun test --coverage",
     "check": "tsc && eslint . && bun test"
@@ -21,10 +25,6 @@
     "eslint": "^10.13.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.0"
-  },
-  "dependencies": {
-    "nodemailer": "^8.0.11",
-    "ssh2": "1.17.0"
   },
   "trustedDependencies": [],
   "patchedDependencies": {
