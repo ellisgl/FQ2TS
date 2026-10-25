@@ -16,8 +16,8 @@ You need [Bun](https://bun.sh/) and a terminal of at least 80x25:
 
 ```sh
 bun install            # dev tools only (TypeScript, ESLint); not needed just to play
-bun start              # or: bun fq2.ts
-bun run debug          # or: bun fq2.ts --debug   (position display, S = settings editor)
+bun start              # or: bun games/fq2/fq2.ts
+bun run debug          # or: bun games/fq2/fq2.ts --debug   (position display, S = settings editor)
 ```
 
 Saved games go to `saves/` as JSON. Set `FQ2_COLORS=16` if your terminal lacks true-color support.
@@ -26,19 +26,19 @@ While exploring: arrows (or 8 4 6 2) walk, **I** or **V** shows your stats and i
 
 Text and maps are Unicode (UTF-8): a map cell can hold any character one column wide (letters with accents, Greek, Cyrillic, box drawing, blocks, symbols...), but not wide ones like emoji or CJK, which would put the screen out of line. Anything that doesn't fit a cell is shown as `?`.
 
-Items are defined in `data/items.json` and monsters and encounter tables in `data/monsters.json`.
+Items are defined in `games/fq2/data/items.json` and monsters and encounter tables in `games/fq2/data/monsters.json`.
 
 ## Multiplayer server
 
 ```sh
 bun run server                     # telnet on 2323, SSH on 2222, web on http://127.0.0.1:8080/
-bun server.ts --host 0.0.0.0       # let other computers connect (-h for all the options)
+bun run server --host 0.0.0.0      # let other computers connect (-h for all the options)
 ```
 
 Players connect with a telnet client (`telnet localhost 2323`), SSH (`ssh -p 2222 localhost`, with any user name and no password) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and one address can only have one account. A forgotten password is reset from the login menu with another code, and the address can be changed from the menu in the game (Escape), which takes the password and a code sent to the new address. The codes are sent through an SMTP server:
 
 ```sh
-FQ2_SMTP_PASSWORD=... bun server.ts --smtp-host smtp.example.com --smtp-user game@example.com
+FQ2_SMTP_PASSWORD=... bun run server --smtp-host smtp.example.com --smtp-user game@example.com
 ```
 
 Without `--smtp-host`, emails are written to the server's log instead, for trying it out.
@@ -51,17 +51,17 @@ Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are s
 
 ## Tools
 
-New versions of the original's map tools, working on `data/maps/` directly:
+New versions of the original's map tools, working on `games/fq2/data/maps/` directly:
 
 ```sh
 bun run edit                       # the level editor (in the terminal; press ? for its keys)
 bun run generate                   # fill every blank outdoor screen with generated terrain
-bun tools/generate.ts -s 8-10 --seed 7 -p preview.html -n   # try a seed without saving
+bun run generate -s 8-10 --seed 7 -p preview.html -n   # try a seed without saving
 bun run view                       # write world.html: the whole world, to open in a browser
-bun tools/view.ts -s 82,721-726    # only some screens (-o sets the output file, -h for help)
+bun run view -s 82,721-726         # only some screens (-o sets the output file, -h for help)
 ```
 
-The editor opens on an overview of the whole 80x24 world grid, one cell per screen, coloured by kind. From there you can create, copy, delete and re-kind screens, and press Enter to edit one. Screens are painted with a brush (character, colours, and whether it's solid) using the keyboard or the mouse. Left-drag paints, right-drag selects, and a middle click picks up a cell as the brush. The bottom row is a palette: click the brush for the character picker, a colour to use it, or HARD/SOFT to switch. In the overview, click a screen to select it and click again to open it. There's a character picker (pages of box drawing, blocks, symbols, arrows, letters and more; or type any character, or give its code point with Tab), rectangle selections with fill, copy and stamp, undo/redo, and overlays for solid cells and trigger tiles. S saves to `data/maps/`, and only screens that changed are rewritten.
+The editor opens on an overview of the whole 80x24 world grid, one cell per screen, coloured by kind. From there you can create, copy, delete and re-kind screens, and press Enter to edit one. Screens are painted with a brush (character, colours, and whether it's solid) using the keyboard or the mouse. Left-drag paints, right-drag selects, and a middle click picks up a cell as the brush. The bottom row is a palette: click the brush for the character picker, a colour to use it, or HARD/SOFT to switch. In the overview, click a screen to select it and click again to open it. There's a character picker (pages of box drawing, blocks, symbols, arrows, letters and more; or type any character, or give its code point with Tab), rectangle selections with fill, copy and stamp, undo/redo, and overlays for solid cells and trigger tiles. S saves to the map folder, and only screens that changed are rewritten.
 
 The viewer lays the outdoor screens out where they sit on the world grid and lists the interiors after them, in their real characters and colours. It can zoom, and outline solid cells and trigger tiles.
 
@@ -82,18 +82,22 @@ bun test               # just the tests
 bun run coverage       # tests with a coverage report
 ```
 
-Code style follows the PER Coding Style (adapted from PHP): 4-space indents, single quotes, braces on every block, explicit `public`/`private`, no trailing whitespace. ESLint enforces it (`bunx eslint --fix .` fixes most of it). The code avoids `any`, `as` casts and `!` assertions. Lookups that can only miss because of a bug go through `at()`/`cellAt()` in [engine/assert.ts](engine/assert.ts), which throw. JSON files and saved games are checked when they're loaded ([engine/validate.ts](engine/validate.ts)), so a bad file fails with the path to the bad value, e.g. `monsters.json.monsters[1].hp: expected a whole number`.
+Code style follows the PER Coding Style (adapted from PHP): 4-space indents, single quotes, braces on every block, explicit `public`/`private`, no trailing whitespace. ESLint enforces it (`bunx eslint --fix .` fixes most of it). The code avoids `any`, `as` casts and `!` assertions. Lookups that can only miss because of a bug go through `at()`/`cellAt()` in [assert.ts](packages/engine/src/assert.ts), which throw. JSON files and saved games are checked when they're loaded ([validate.ts](packages/engine/src/validate.ts)), so a bad file fails with the path to the bad value, e.g. `monsters.json.monsters[1].hp: expected a whole number`.
 
 ## Layout
 
-- [fq2.ts](fq2.ts) is the entry point.
-- [engine/](engine/) is the game engine: terminal, screen, text markup, world, combat, saves, and the `g` API that scripts use ([engine/script.ts](engine/script.ts)).
-- [content/](content/) is the game itself: every screen's triggers and all the scripts, written as async TypeScript functions (converted from the original REF files). [content/start.ts](content/start.ts) holds the starting player and the `Flags` type, so a misspelled flag is a compile error.
-- [data/](data/) holds the game data as JSON: `config.json` (from VARS.DAT), `items.json` (the item catalogue), `monsters.json` (monsters and encounter tables, from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT, now with screen names and terrain).
-- [server/](server/) is the multiplayer server: telnet and web connections, accounts and saves (SQLite), and each player's session. [server.ts](server.ts) starts it.
-- [tools/](tools/) holds the map tools (see Tools above).
-- [test/](test/) holds the unit tests (`bun:test`). [test/helpers.ts](test/helpers.ts) has a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, plus small worlds and players to test with. [test/content/data.test.ts](test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
-- [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (telnet and web, LORD II style).
+The repository is a Bun workspace: an engine and its multiplayer server and map tools as packages that other games could use, and Final Quest 2 as a game built on them.
+
+- [packages/engine/](packages/engine/) (`@fq2js/engine`) is the game engine: terminal, screen, text markup, world, combat, items, saves, and the `g` API that scripts use ([script.ts](packages/engine/src/script.ts)). [testing.ts](packages/engine/src/testing.ts) is a kit for testing games: a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, and small maps, worlds and monsters.
+- [packages/server/](packages/server/) (`@fq2js/server`) is the multiplayer server: telnet, SSH and web connections, accounts with email addresses, saves (SQLite, with [migrations](packages/server/src/migrations.ts)), and each player's session. [cli.ts](packages/server/src/cli.ts) is its command line, which a game runs with its content.
+- [packages/tools/](packages/tools/) (`@fq2js/tools`) holds the map tools (see Tools above); a game gives them its map folder and trigger tiles.
+- [games/fq2/](games/fq2/) is Final Quest 2:
+  - [fq2.ts](games/fq2/fq2.ts) is the single-player entry point, [server.ts](games/fq2/server.ts) the multiplayer one, and [tools/](games/fq2/tools/) runs the map tools on its maps.
+  - [content/](games/fq2/content/) is the game itself: every screen's triggers and all the scripts, written as async TypeScript functions (converted from the original REF files). [content/start.ts](games/fq2/content/start.ts) holds the starting player and the `Flags` type, so a misspelled flag is a compile error.
+  - [data/](games/fq2/data/) holds the game data as JSON: `config.json` (from VARS.DAT), `items.json` (the item catalogue), `monsters.json` (monsters and encounter tables, from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT, now with screen names and terrain).
+- Tests (`bun:test`) sit in each package's `test/` folder. The ones that need a real game to run (most of the engine's game, script and combat tests, the server's sessions, the editor) are in [games/fq2/test/](games/fq2/test/), with FQ2's fixtures in [helpers.ts](games/fq2/test/helpers.ts). [content/data.test.ts](games/fq2/test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
+- [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (telnet, SSH and web, LORD II style).
+- [patches/](patches/) patches ssh2 not to load its native add-ons (Bun crashes loading them).
 
 ## License
 

@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, spyOn, test, type Mock } from 'bun:test';
 import { bank, berries, healer, roshi, travelOffice } from '../../content/scripts/town.ts';
-import { ScriptContext } from '../../engine/script.ts';
-import type { FightResult } from '../../engine/combat.ts';
+import { ScriptContext } from '@fq2js/engine/script';
+import type { FightResult } from '@fq2js/engine/combat';
 import { newPlayer, pick, row, screenText, scriptContext, typed, type FakeTerminal, type Step } from '../helpers.ts';
-import type { Key } from '../../engine/terminal.ts';
+import type { Key } from '@fq2js/engine/terminal';
 
 const mocks: { mockRestore(): void }[] = [];
 afterEach(() => {

@@ -1,12 +1,12 @@
 // The game's fixed screens: title, help, credits, world map legend, status
 // bar and inventory. Text uses the markup described in engine/text.js.
 
-import { escapeMarkup } from '../engine/text.ts';
-import { COLORS } from '../engine/screen.ts';
-import { at } from '../engine/assert.ts';
-import type { Config, Content } from '../engine/game.ts';
-import type { Player } from '../engine/player.ts';
-import type { ItemDef } from '../engine/items.ts';
+import { escapeMarkup } from '@fq2js/engine/text';
+import { COLORS } from '@fq2js/engine/screen';
+import { at } from '@fq2js/engine/assert';
+import type { Config, Content } from '@fq2js/engine/game';
+import type { Player } from '@fq2js/engine/player';
+import type { ItemDef } from '@fq2js/engine/items';
 import type { Flags, G } from './start.ts';
 
 export const title: Content<Flags>['title'] = {

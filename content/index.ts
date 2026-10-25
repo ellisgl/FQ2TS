@@ -1,6 +1,6 @@
 // Everything that makes this particular game, as opposed to the engine.
 
-import type { Content } from '../engine/game.ts';
+import type { Content } from '@fq2js/engine/game';
 import { title, help, credits, worldMapLegend, statusLine, inventory } from './ui.ts';
 import { newGame } from './story.ts';
 import { screens } from './screens.ts';

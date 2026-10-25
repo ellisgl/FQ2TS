@@ -1,6 +1,6 @@
 // Riply's armour shop and the weapon store in Stone Valley.
 
-import type { ItemKind } from '../../engine/items.ts';
+import type { ItemKind } from '@fq2js/engine/items';
 import type { G, Script } from '../start.ts';
 
 interface Shop {

@@ -4,12 +4,12 @@
 
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
-import { Terminal } from './engine/terminal.ts';
-import { World } from './engine/world.ts';
-import { Saves } from './engine/saves.ts';
-import { Game, readConfig } from './engine/game.ts';
-import { readBestiary } from './engine/combat.ts';
-import { readItems } from './engine/items.ts';
+import { Terminal } from '@fq2js/engine/terminal';
+import { World } from '@fq2js/engine/world';
+import { Saves } from '@fq2js/engine/saves';
+import { Game, readConfig } from '@fq2js/engine/game';
+import { readBestiary } from '@fq2js/engine/combat';
+import { readItems } from '@fq2js/engine/items';
 import content from './content/index.ts';
 
 const args = process.argv.slice(2);
@@ -22,7 +22,7 @@ const readJson = (file: string): unknown => JSON.parse(readFileSync(join(root, '
 let game;
 try {
     game = new Game({
-        term: new Terminal(),
+        term: new Terminal({ name: 'Final Quest 2' }),
         world: World.load(join(root, 'data', 'maps')),
         config: readConfig(readJson('config.json')),
         monsters: readBestiary(readJson('monsters.json')),

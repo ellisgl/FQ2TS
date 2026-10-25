@@ -1,0 +1,16 @@
+{
+  "name": "final-quest-2",
+  "version": "0.94.4",
+  "private": true,
+  "description": "Final Quest 2, the QBASIC game, rewritten in TypeScript on @fq2js/engine.",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@fq2js/engine": "workspace:*",
+    "@fq2js/server": "workspace:*",
+    "@fq2js/tools": "workspace:*"
+  },
+  "devDependencies": {
+    "ssh2": "1.17.0"
+  }
+}

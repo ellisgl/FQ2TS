@@ -1,6 +1,6 @@
 // One-off scenes: the old woman, the hotel, the castle and Port City.
 
-import { at } from '../../engine/assert.ts';
+import { at } from '@fq2js/engine/assert';
 import type { G } from '../start.ts';
 
 const CONTINUE = '{lightgreen}<{green}Continue{lightgreen}>';
