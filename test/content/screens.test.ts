@@ -85,12 +85,13 @@ describe('your house', () => {
 });
 
 describe('the house with the minigun', () => {
-    test('finding it, once', async () => {
-        const { g, game, term } = scriptContext({ player: newPlayer({ screen: 725 }) });
+    test('finding it, once, and using it at once', async () => {
+        const { g, game, term } = scriptContext({ player: newPlayer({ screen: 725, items: { stick: 1 }, weapon: 'stick' }) });
         await trigger(725, 33, 13)(g);
         expect(g.count('minigun')).toBe(1);
-        expect(g.weapon).toBeNull();
-        expect(row(term.screen, 23)).toContain('You find a Minigun on the table!');
+        expect(g.weapon?.id).toBe('minigun');
+        expect(g.count('stick')).toBe(1);
+        expect(row(term.screen, 23)).toContain('You find a Minigun on the table, and arm yourself with it!');
         game.newTurn();
         await trigger(725, 33, 13)(g);
         expect(g.count('minigun')).toBe(1);
