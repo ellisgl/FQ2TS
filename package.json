@@ -13,6 +13,7 @@
     "edit": "bun games/fq2/tools/edit.ts",
     "generate": "bun games/fq2/tools/generate.ts",
     "view": "bun games/fq2/tools/view.ts",
+    "hello": "bun games/hello/hello.ts",
     "test": "bun test",
     "coverage": "bun test --coverage",
     "check": "tsc && eslint . && bun test"
