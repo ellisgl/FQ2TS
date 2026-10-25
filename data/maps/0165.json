@@ -96,5 +96,29 @@
     "#........#.........##.#...........................#.##..#######...###########.#",
     "............#..#.###..............#.........#.....##.####.###.########.##.###.#",
     "...............................#..#..............##############################"
+  ],
+  "terrain": [
+    "..........f.................rr.....................wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".............f..f...........rr..................ff.wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "............ff.....f........rr.....ff........ff.f.wwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "f.f..........f.......fff....rr.....ffff......fff...wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...fff.f.....ff..f..........rr....f...ff.....ff....wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "...f..ffff.....f............rr....ff..fff....ff....wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "....ff.....f.f.ff...........rr.........ff......f..wwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "f....ff..f......f...........rr.....f....f.........wwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".......fff.f.......f.f.f....rr....f.f........ff...fwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".......f....f...ff....ff....rr.f..f.ff..f.....ff...wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    ".......f.....fff............rr.f..f.fff.f.....ff...wwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "........f.....ff...ff.......rr.ff.....fff.....f.....wwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "........f...ffffff..........rr..f.......ff...f........wwwwwwwwwwwwwwwwwwwwwwwww",
+    ".....f......ffff............rr...fffff....ffff.....f..wwwwwwwwwwwwwwwwwwwwwwwww",
+    "............ffff............rr..ff........................wwwwwwwwwwwwwwwwwwwww",
+    "......................f.....rr..ffff...............f.ff........fwwwwww.ffffff..",
+    "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrffff.f..fffffffff",
+    "................................rr................f.........rrrrf....f.f..rrrrr",
+    ".................f.....f.ff.....rr......ff........f......f..ffrrrrrrrrrrrrrrf..",
+    "f........f.........ff.f.........rr................f.ff..fffffff...fffffffffff.f",
+    "............f..f.fff............rrf.........f.....ff.ffff.fff.ffffffff.ff.fff.f",
+    "...............................frrf..............ffffffffffffffffffffffffffffff"
   ]
 }

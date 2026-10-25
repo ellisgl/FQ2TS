@@ -96,5 +96,29 @@
     "################################.##............................##.#############",
     "##############################################..#############.###.#############",
     "######################.#######################..###############################"
+  ],
+  "terrain": [
+    "mmmmmmmmmmmmmmmmmmmmmmmm......................rr...............ffffffffffffffff",
+    "mmmmmmmmmmmmmmmmmmmmmmmmm....fff..............rr.................ffffffffffffff",
+    "mmmmmmmmmmmmmmmmmmmmm..mm...ff......m.........rr.................fffffffff.fff.",
+    "mmmmmmmmmmmmmmmmmmmmm.mmmm....................rr......ff..........fff.ff.fffff.",
+    "mmmmmmmmmmmmmmmmmmmmmmmmmm.............f......rr......ff....m......fffff.fffff.",
+    "mmmmmmmmmmmmmmmmmmmm...m.mm............ff.....rr.......ff.........ff.ffffffff..",
+    "mmmmmmmmmmmmmmmmmmmmmmmm..m.........f..f......rr...................ffffff.ffff.",
+    "mmmmmmmmmmmmmmmmmmmmmmmm..m........ff.........rr....................ff..fffffff",
+    "mmmmmmmmmmmmmmmmmmmmmm.mm.m.........f.........rr...........m.........fff.fff..f",
+    "mmmmffffffffffffffmmmm..m.m...................rr...........mm..........ffffffff",
+    "mmmf......ff......fmmm..mmm..ff.....mm........rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+    "mmmmffffffffffffffmmmm.mmmm...ff....mm....f...rr...............................",
+    "mmmmmmmmmmmmmmmmmmmmmm.mmmm...................rr..#....................fff.ffff",
+    "mmmmmmmmmmmmmmmmmmmmm.....m...................rr.........ff............fffff..f",
+    "mmmmmmmmmmmmmmmmmmmmmmmmmmm..................frr..........f.............fffffff",
+    "mmmmmmmmmmmmmmmmmmmmmmmm..mm................ffrr.....ff...f.............ffff.f.",
+    "mmmmmmmmmmmmmmmmmmmm..mmm.mm.....mmm..........rr......ff...............fffffff.",
+    "mmmmmmmmmmmmmmmmmmmmm.mmmmmm....mmmm..........rr.......ff.........ffffff.fffff.",
+    "mmmmmmmmmmmmmmmmmmmmmmmmmmmm.mmmm.m...........rr..................ff..ff.ffffff",
+    "mmmmmmmmmmmmmmmmmmmmmmffmmmmmmmm.mm...........rr...............ff.fffffffffffff",
+    "mmmmmmmmmmmmmmmmmmmmmmfmmmmffmmmfmffffffffffffrrfffffffffffff.fff.fffffffffffff",
+    "mmmmmmmmmmmmmmmmmmmmmm.mmmmmmmmmmmffffffffffffrrfffffffffffffffffffffffffffffff"
   ]
 }
