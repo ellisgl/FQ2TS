@@ -43,6 +43,8 @@ FQ2_SMTP_PASSWORD=... bun server.ts --smtp-host smtp.example.com --smtp-user gam
 
 Without `--smtp-host`, emails are written to the server's log instead, for trying it out.
 
+Every option can also be set as an environment variable (`--smtp-host` is `FQ2_SMTP_HOST`, and so on), or kept in a `.env` file in the folder the server is started from: copy [.env.example](.env.example) to `.env` and fill it in. Options on the command line win. `.env` is ignored by git, so the SMTP password stays out of the repository.
+
 Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use the web page behind HTTPS (`--no-telnet` turns telnet off). Seeing and talking to other players comes next: see [docs/multiplayer.md](docs/multiplayer.md).
 
 ## Tools

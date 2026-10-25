@@ -10,6 +10,10 @@ import { smtpMailer, type Mailer } from './server/mail.ts';
 
 const USAGE = `Usage: bun server.ts [options]
 
+Each option can also be set in the environment, or in a .env file in the
+folder the server is started from (see .env.example): --telnet-port is
+FQ2_TELNET_PORT, and so on. Options given here win.
+
   --host ADDRESS        where to listen (default: 127.0.0.1, this computer
                         only; 0.0.0.0 lets other computers in)
   --telnet-port N       telnet port (default: 2323)
@@ -22,23 +26,23 @@ const USAGE = `Usage: bun server.ts [options]
   --smtp-host HOST      the mail server that sends players' codes (without
                         one, emails are written to the log instead)
   --smtp-port N         its port (default: 587; 465 for TLS from the start)
-  --smtp-user NAME      who to log in to it as; the password comes from the
-                        FQ2_SMTP_PASSWORD environment variable
+  --smtp-user NAME      who to log in to it as; the password is only read
+                        from the environment, as FQ2_SMTP_PASSWORD
   --mail-from ADDRESS   who the emails are from (default: the --smtp-user)
   -h, --help            show this help`;
 
 const { values } = parseArgs({
     options: {
-        'host': { type: 'string', default: '127.0.0.1' },
-        'telnet-port': { type: 'string', default: '2323' },
-        'web-port': { type: 'string', default: '8080' },
-        'no-telnet': { type: 'boolean', default: false },
-        'no-web': { type: 'boolean', default: false },
-        'data': { type: 'string', default: 'server-data' },
-        'max-players': { type: 'string', default: '50' },
-        'idle-minutes': { type: 'string', default: '30' },
+        'host': { type: 'string' },
+        'telnet-port': { type: 'string' },
+        'web-port': { type: 'string' },
+        'no-telnet': { type: 'boolean' },
+        'no-web': { type: 'boolean' },
+        'data': { type: 'string' },
+        'max-players': { type: 'string' },
+        'idle-minutes': { type: 'string' },
         'smtp-host': { type: 'string' },
-        'smtp-port': { type: 'string', default: '587' },
+        'smtp-port': { type: 'string' },
         'smtp-user': { type: 'string' },
         'mail-from': { type: 'string' },
         'help': { type: 'boolean', short: 'h', default: false },
@@ -50,41 +54,70 @@ if (values.help) {
     process.exit(0);
 }
 
-const number = (name: string, value: string): number => {
-    if (!/^\d+$/.test(value)) {
-        console.error(`--${name} must be a whole number, not "${value}".`);
-        process.exit(1);
+type Name = Exclude<keyof typeof values, 'help'>;
+
+// An option's environment variable: --telnet-port is FQ2_TELNET_PORT.
+const envName = (name: Name): string => `FQ2_${name.toUpperCase().replaceAll('-', '_')}`;
+// How to name an option in a message.
+const both = (name: Name): string => `--${name} (or ${envName(name)})`;
+
+const fail = (message: string): never => {
+    console.error(message);
+    process.exit(1);
+};
+
+// An option from the command line, else the environment, else its default.
+function setting(name: Name): string | undefined;
+function setting(name: Name, fallback: string): string;
+function setting(name: Name, fallback?: string): string | undefined {
+    const given = values[name];
+    if (typeof given === 'string') {
+        return given;
     }
 
-    return Number(value);
-};
+    const env = process.env[envName(name)];
+    return env === undefined || env === '' ? fallback : env;
+}
+
+function number(name: Name, fallback: number): number {
+    const value = setting(name, String(fallback));
+    return /^\d+$/.test(value) ? Number(value) : fail(`${both(name)} must be a whole number, not "${value}".`);
+}
+
+function flag(name: Name): boolean {
+    if (values[name] === true) {
+        return true;
+    }
+
+    const env = (process.env[envName(name)] ?? '').toLowerCase();
+    if (['', '0', 'false', 'no'].includes(env)) {
+        return false;
+    }
+
+    return ['1', 'true', 'yes'].includes(env) || fail(`${envName(name)} must be true or false, not "${env}".`);
+}
 
 // Where players' codes are emailed from, if anywhere.
 function mailer(): Mailer | null {
-    const host = values['smtp-host'];
+    const host = setting('smtp-host');
     if (host === undefined) {
-        console.warn('No --smtp-host: emails (with players\' codes) will be written to the log, not sent.');
+        console.warn('No --smtp-host (or FQ2_SMTP_HOST): emails (with players\' codes) will be written to the log, not sent.');
         return null;
     }
 
-    const user = values['smtp-user'];
-    const from = values['mail-from'] ?? user;
-    if (from === undefined) {
-        console.error('--mail-from is needed (or --smtp-user) to say who the emails are from.');
-        process.exit(1);
-    }
-
+    const user = setting('smtp-user');
+    const from = setting('mail-from') ?? user ?? fail(`${both('mail-from')} is needed (or --smtp-user) to say who the emails are from.`);
     const password = process.env['FQ2_SMTP_PASSWORD'];
     return smtpMailer({
         host,
-        port: number('smtp-port', values['smtp-port']),
+        port: number('smtp-port', 587),
         from,
         ...(user === undefined ? {} : { user }),
         ...(password === undefined ? {} : { password }),
     });
 }
 
-const dataDir = resolve(values.data);
+const dataDir = resolve(setting('data', 'server-data'));
 const mail = mailer();
 mkdirSync(dataDir, { recursive: true });
 
@@ -96,11 +129,11 @@ function start(): RunningServer {
             content,
             dataDir: join(import.meta.dir, 'data'),
             database: join(dataDir, 'fq2.sqlite'),
-            host: values.host,
-            telnetPort: values['no-telnet'] ? null : number('telnet-port', values['telnet-port']),
-            webPort: values['no-web'] ? null : number('web-port', values['web-port']),
-            maxPlayers: number('max-players', values['max-players']),
-            idleMinutes: number('idle-minutes', values['idle-minutes']),
+            host: setting('host', '127.0.0.1'),
+            telnetPort: flag('no-telnet') ? null : number('telnet-port', 2323),
+            webPort: flag('no-web') ? null : number('web-port', 8080),
+            maxPlayers: number('max-players', 50),
+            idleMinutes: number('idle-minutes', 30),
             ...(mail ? { mailer: mail } : {}),
         });
     } catch (error) {
