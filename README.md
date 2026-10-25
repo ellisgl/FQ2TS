@@ -31,11 +31,11 @@ Items are defined in `data/items.json` and monsters and encounter tables in `dat
 ## Multiplayer server
 
 ```sh
-bun run server                     # telnet on port 2323, web on http://127.0.0.1:8080/
+bun run server                     # telnet on 2323, SSH on 2222, web on http://127.0.0.1:8080/
 bun server.ts --host 0.0.0.0       # let other computers connect (-h for all the options)
 ```
 
-Players connect with a telnet client (`telnet localhost 2323`) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and one address can only have one account. A forgotten password is reset from the login menu with another code, and the address can be changed from the menu in the game (Escape), which takes the password and a code sent to the new address. The codes are sent through an SMTP server:
+Players connect with a telnet client (`telnet localhost 2323`), SSH (`ssh -p 2222 localhost`, with any user name and no password) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and one address can only have one account. A forgotten password is reset from the login menu with another code, and the address can be changed from the menu in the game (Escape), which takes the password and a code sent to the new address. The codes are sent through an SMTP server:
 
 ```sh
 FQ2_SMTP_PASSWORD=... bun server.ts --smtp-host smtp.example.com --smtp-user game@example.com
@@ -45,7 +45,9 @@ Without `--smtp-host`, emails are written to the server's log instead, for tryin
 
 Every option can also be set as an environment variable (`--smtp-host` is `FQ2_SMTP_HOST`, and so on), or kept in a `.env` file in the folder the server is started from: copy [.env.example](.env.example) to `.env` and fill it in. Options on the command line win. `.env` is ignored by git, so the SMTP password stays out of the repository.
 
-Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use the web page behind HTTPS (`--no-telnet` turns telnet off). Seeing and talking to other players comes next: see [docs/multiplayer.md](docs/multiplayer.md).
+Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use SSH, or the web page behind HTTPS (`--no-telnet` turns telnet off). The server makes its SSH host key the first time, in `server-data/ssh_host_ed25519_key`; keep it, or players' SSH clients will warn that the server has changed.
+
+(ssh2 is patched, in [patches/](patches/), not to load its optional native add-ons: Bun crashes loading them. It works without them.) Seeing and talking to other players comes next: see [docs/multiplayer.md](docs/multiplayer.md).
 
 ## Tools
 

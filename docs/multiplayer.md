@@ -98,6 +98,11 @@ Each phase ends playable, tested and committed.
     can be sent after a minute, and one connection can send 5 emails.
     Mail goes through SMTP (nodemailer), or into the log without
     `--smtp-host`.
+  - SSH (ssh2) on port 2222: any user name, no password, then the same
+    login screen. Only a shell: no commands, forwarding or file transfer.
+    The host key (ed25519) is made on first start. A client gets 30
+    seconds to ask for a terminal. ssh2 is patched not to load its native
+    add-ons, which crash Bun.
 
 ## Testing
 
@@ -115,5 +120,7 @@ Each phase ends playable, tested and committed.
    gold and the minigun are open.
 3. **PvP rules.** What the loser loses, and whether offline players can be
    attacked (LORD I: yes; LORD II: no).
-4. **Telnet sends passwords in the clear.** Fine on a LAN or a BBS; for
-   public play, the web client over TLS (telnet could be optional).
+4. ~~**Telnet sends passwords in the clear.**~~ Decided: SSH (any user
+   name, no password, then the game's login screen) for secure terminal
+   play, and the web client over TLS; telnet stays for LANs and BBSes and
+   can be turned off. No telnet over TLS: few clients support it.

@@ -18,9 +18,13 @@ FQ2_TELNET_PORT, and so on. Options given here win.
                         only; 0.0.0.0 lets other computers in)
   --telnet-port N       telnet port (default: 2323)
   --web-port N          web port (default: 8080); players open http://host:N/
+  --ssh-port N          SSH port (default: 2222); players use
+                        ssh -p N host (any user name, no password)
   --no-telnet           don't accept telnet (it sends passwords unencrypted)
   --no-web              don't accept web browsers
-  --data DIR            where the database goes (default: server-data)
+  --no-ssh              don't accept SSH
+  --data DIR            where the database and the SSH host key go
+                        (default: server-data)
   --max-players N       connections at once (default: 50)
   --idle-minutes N      disconnect players idle this long (default: 30)
   --smtp-host HOST      the mail server that sends players' codes (without
@@ -38,6 +42,8 @@ const { values } = parseArgs({
         'web-port': { type: 'string' },
         'no-telnet': { type: 'boolean' },
         'no-web': { type: 'boolean' },
+        'ssh-port': { type: 'string' },
+        'no-ssh': { type: 'boolean' },
         'data': { type: 'string' },
         'max-players': { type: 'string' },
         'idle-minutes': { type: 'string' },
@@ -132,19 +138,25 @@ function start(): RunningServer {
             host: setting('host', '127.0.0.1'),
             telnetPort: flag('no-telnet') ? null : number('telnet-port', 2323),
             webPort: flag('no-web') ? null : number('web-port', 8080),
+            ssh: flag('no-ssh') ? null : { port: number('ssh-port', 2222), hostKeyFile: join(dataDir, 'ssh_host_ed25519_key') },
+            onError: (error) => {
+                fail(couldNotStart(error));
+            },
             maxPlayers: number('max-players', 50),
             idleMinutes: number('idle-minutes', 30),
             ...(mail ? { mailer: mail } : {}),
         });
     } catch (error) {
-        const code = typeof error === 'object' && error !== null && 'code' in error ? error.code : undefined;
-        console.error(
-            code === 'EADDRINUSE'
-                ? 'A port the server needs is already in use. Is it running already? (--telnet-port and --web-port choose others.)'
-                : `The server couldn't start: ${error instanceof Error ? error.message : String(error)}`,
-        );
-        process.exit(1);
+        return fail(couldNotStart(error));
     }
+}
+
+// Why the server couldn't start.
+function couldNotStart(error: unknown): string {
+    const code = typeof error === 'object' && error !== null && 'code' in error ? error.code : undefined;
+    return code === 'EADDRINUSE'
+        ? 'A port the server needs is already in use. Is it running already? (--telnet-port, --web-port and --ssh-port choose others.)'
+        : `The server couldn't start: ${error instanceof Error ? error.message : String(error)}`;
 }
 
 const server = start();
