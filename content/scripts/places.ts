@@ -127,7 +127,7 @@ export async function bar(g: G): Promise<void> {
 }
 
 export async function cityGuards(g: G): Promise<void> {
-  if (g.flags.hasPortCityPass) {
+  if (g.has("port-city-pass")) {
     g.write("{lightred}The guards eye you as you pass.");
     return;
   }

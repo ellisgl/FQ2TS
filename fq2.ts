@@ -9,6 +9,7 @@ import { World } from "./engine/world.ts";
 import { Saves } from "./engine/saves.ts";
 import { Game, readConfig } from "./engine/game.ts";
 import { readMonsterTable } from "./engine/combat.ts";
+import { readItems } from "./engine/items.ts";
 import content from "./content/index.ts";
 
 const args = process.argv.slice(2);
@@ -25,6 +26,7 @@ try {
     world: World.load(join(root, "data", "maps")),
     config: readConfig(readJson("config.json")),
     monsters: readMonsterTable(readJson("monsters.json")),
+    items: readItems(readJson("items.json")),
     content,
     saves: new Saves(join(root, "saves")),
     debug,

@@ -30,33 +30,33 @@ test.each(screens.flatMap((s) => s.at.map(([xy]) => [s.n, xy])))("screen %i: tri
   expect(y).toBeLessThanOrEqual(MAP_HEIGHT);
 });
 
-// Two sets of flags: a new game, and a player who has done everything.
-const flagSets: [string, Partial<Flags>][] = [
-  ["a new game", {}],
+// Two players: a new game, and a player who has done everything.
+const flagSets: [string, Partial<Flags>, Record<string, number>][] = [
+  ["a new game", {}, {}],
   [
     "a seasoned player",
     {
       toiletUsed: true,
       goldNearBarn: false,
       womanOffersCocoa: false,
-      berries: 25,
       hasBankAccount: true,
       bankGold: 100,
       hotelScene: 2,
       ownsCastle: true,
       castleExitX: 42,
       oldManSeen: true,
-      hasPortCityPass: true,
       hadDrink: true,
+      foundMinigun: true,
     },
+    { wildberries: 25, "port-city-pass": 1, stick: 1, vest: 1 },
   ],
 ];
 
-describe.each(flagSets)("with the flags of %s", (_, flags) => {
+describe.each(flagSets)("with the flags of %s", (_, flags, items) => {
   // Every trigger, answering every question with Escape.
   test.each(screens.flatMap((s) => s.at.map(([xy]) => [s.n, xy])))("screen %i, %s leads somewhere real", async (n, xy) => {
     const [x = 1, y = 1] = xy.split(",").map(Number);
-    const { game } = makeGame({ player: newPlayer({ screen: n, x, y }, flags), fallback: "escape" });
+    const { game } = makeGame({ player: newPlayer({ screen: n, x, y, items }, flags), fallback: "escape" });
     const g = new ScriptContext(game);
     const script = content.screens[n]?.at?.[`${x},${y}`];
     expect(script).toBeDefined();
@@ -73,7 +73,7 @@ describe.each(flagSets)("with the flags of %s", (_, flags) => {
   });
 
   test.each(screens.filter((s) => s.show).map((s) => [s.n]))("screen %i's show script runs", async (n) => {
-    const { game } = makeGame({ player: newPlayer({ screen: n, x: 40, y: 15 }, flags), fallback: "escape" });
+    const { game } = makeGame({ player: newPlayer({ screen: n, x: 40, y: 15, items }, flags), fallback: "escape" });
     await content.screens[n]?.show?.(new ScriptContext(game));
     expect(game.playing.screen).toBe(n);
   });

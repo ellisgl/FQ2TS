@@ -82,10 +82,15 @@ describe("your house", () => {
 });
 
 describe("the house with the minigun", () => {
-  test("finding it", async () => {
-    const { g } = scriptContext({ player: newPlayer({ screen: 725 }) });
+  test("finding it, once", async () => {
+    const { g, term } = scriptContext({ player: newPlayer({ screen: 725 }) });
     await trigger(725, 33, 13)(g);
-    expect(g.weapon).toEqual({ name: "Minigun", power: 10000, value: 100000 });
+    expect(g.count("minigun")).toBe(1);
+    expect(g.weapon).toBeNull();
+    expect(row(term.screen, 23)).toContain("You find a Minigun on the table!");
+    await trigger(725, 33, 13)(g);
+    expect(g.count("minigun")).toBe(1);
+    expect(row(term.screen, 23)).toContain("An empty table.");
   });
 });
 
