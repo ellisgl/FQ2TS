@@ -108,6 +108,22 @@ Each phase ends playable, tested and committed.
     seconds to ask for a terminal. ssh2 is patched not to load its native
     add-ons, which crash Bun.
 
+- **Phase 2: done.** Other players are drawn on the map (☻; you're ☺),
+  arrivals in and departures from the realm are announced, and P lists
+  who's in the realm and where, L every player by experience.
+  - The server's `Realm` keeps who's where. A game is told about
+    changes (`othersChanged`, `notify`) and only redraws when it's next
+    waiting for a key on the map, never in the middle of a script; the
+    terminal's `wake()` ends that wait early.
+  - The game reports the player's place (`moved`), draws what the server
+    gives it (`figures`), and takes the server's keys (`keys`, listed by ?).
+  - The cheat words are off on the server (`cheats: false`): QUAKE opened
+    the settings editor, which no one should have on a shared world.
+  - ssh2 makes a host key it can't read about one time in 250; new keys
+    are checked and made again.
+  - Server tests keep a model of each client's screen (the server sends
+    only what changed), and look for text on that.
+
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.
