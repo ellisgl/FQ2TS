@@ -164,6 +164,20 @@ describe('inventory', () => {
 });
 
 describe('a new game', () => {
+    test('a player who already has a name (on the server) is only asked their sex', async () => {
+        const { g, term } = scriptContext({ player: newPlayer({ name: 'Hero' }) });
+        term.feed(
+            () => {
+                expect(screenText(term.screen)).not.toContain('What is your name');
+                expect(row(term.screen, 6)).toBe('And are you...');
+                return 'enter';
+            },
+            'x',
+        );
+        await newGame(g);
+        expect([g.name, g.sex]).toEqual(['Hero', 'male']);
+    });
+
     test('asks for a name and sex, then starts with a stick and a vest', async () => {
         const { g, term } = scriptContext();
         term.feed(
