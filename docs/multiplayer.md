@@ -89,7 +89,11 @@ Each phase ends playable, tested and committed.
   - An account's name is its player's name; a new game doesn't ask again.
   - Every account has an email address, confirmed with a 6-digit code
     before it can play (accounts from before this are asked for one when
-    they log in). "Forgot password" on the login menu emails a reset code.
+    they log in). A confirmed address belongs to one account (unconfirmed
+    ones can be shared, so no one can hold an address they don't own; the
+    first to confirm it gets it). "Forgot password" on the login menu
+    emails a reset code. "Change email" on the in-game menu asks for the
+    password, then a code sent to the new address, and tells the old one.
     Codes work for 15 minutes and 5 guesses and are stored hashed; another
     can be sent after a minute, and one connection can send 5 emails.
     Mail goes through SMTP (nodemailer), or into the log without

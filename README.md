@@ -35,7 +35,7 @@ bun run server                     # telnet on port 2323, web on http://127.0.0.
 bun server.ts --host 0.0.0.0       # let other computers connect (-h for all the options)
 ```
 
-Players connect with a telnet client (`telnet localhost 2323`) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and a forgotten password is reset from the login menu with another code. The codes are sent through an SMTP server:
+Players connect with a telnet client (`telnet localhost 2323`) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and one address can only have one account. A forgotten password is reset from the login menu with another code, and the address can be changed from the menu in the game (Escape), which takes the password and a code sent to the new address. The codes are sent through an SMTP server:
 
 ```sh
 FQ2_SMTP_PASSWORD=... bun server.ts --smtp-host smtp.example.com --smtp-user game@example.com
