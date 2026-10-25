@@ -1,5 +1,6 @@
 {
   "screen": 243,
+  "name": "The Castle Gates",
   "kind": 5,
   "tiles": [
     "♠♠♠    ♠♠♠♠♠♠ ♠♠♠♠♠♠♠♠    ♠     ♠  ♠  ♠  ♠♠ ♠ ♠  ♠ ♠♠♠♠♠♠♠         ♠   ♠♠♠♠♠♠♠♠",
@@ -96,5 +97,29 @@
     "#........#.............................##.#####.##......####.....#..###........",
     "#.........####.###..#...........#######....##.....##...####.........########...",
     "#....................###.##...................................................."
+  ],
+  "terrain": [
+    "fff....ffffffrffffffff....f.....f..f..f..ff.f.f..f.fffffff.........f...ffffffff",
+    "fff.fff..ffffrffff..ff..ff..ffff..ff.fff.fff..ff.ff..ffffffffffffffff.fff.fffff",
+    "fffff.fffff..r..fffffff.ff..ff.f.fff.ffffffff.fffff.ffffffffffffff..fffff.f....",
+    "ff.ff.ff.....r.ffffffff.fff.ffffff.fff.ff.fffffffffff..fff.ffff.ff.fff..ffff...",
+    "fffffff......r.fff..fff.fffff.ffff..fff....ff..fff.ff.....ffff...ffff...ffff...",
+    "f.fff...ff.f.r.......ffff.ff......................ff........ff............ff...",
+    "ffff.........r........ff....##wwwwwwwwwww##.......fff.f.........ff.f......f...f",
+    "ff..f........r..........wwwww....###......wwwww.....ffff......ffffff.fff.ff....",
+    "f..f.........r.........ww........###..........ww.......f..ff...ff...f..fff..f..",
+    "f.f..........r........ww..###.###.###.###.###..ww......f.fff..fff.f.f..f..f....",
+    "f.f..f..f....r........w...###################...w......f..f..f..f.f....f...f..f",
+    "..f.ff..f....r...f....w...#.###.........###.#...w....f.ff....f......fffff.f....",
+    "..f.....f....r...fff..w...#.#.#.#######.#.#.#...w.....f..fff.f.......ff.f....f.",
+    "ff......f....r........ww..#.###.#######.###.#..ww.....f...f..f......ff.ff.ff.ff",
+    "..f.ffff.....r..f.f....ww.####...#####...####.ww........f...fff...fffff.ff.....",
+    "...ff........r....f.....wwwww#############wwwww...........ff..ffffff....ff.....",
+    "f..f...f.....r....f.........##wwwwwrwwwww##............f..ff.....ff....f.fff...",
+    ".ffff.ff.....r.....................r...........fff.....f.fff.....f..ffff......f",
+    ".f.f.........rrrrrrrrrrrrrrrrrrrrrrr......ff.....f.f..f.....ffff..f.f...f......",
+    "f........f.............................ff.fffff.ff......ffff.....f..fff........",
+    "f.........ffff.fff..f...........fffffff....ff.....ff...ffff.........ffffffff...",
+    "f....................fff.ff...................................................."
   ]
 }

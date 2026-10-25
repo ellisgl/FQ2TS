@@ -1,5 +1,6 @@
 {
   "screen": 166,
+  "name": "The Docks",
   "kind": 5,
   "tiles": [
     "                                                                               ",
@@ -96,5 +97,29 @@
     "#.##.####...##..###.##..###..###..#.#.#########.###.###.#####..###..####.##....",
     "######..#################.#.##..#...########.##....#######.#.....####..#######.",
     "######.......###...#..######...######.#.#.#..########....##.######..####....##."
+  ],
+  "terrain": [
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww###rr#####wwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww#rrrrrrrr#wwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww#rrrrrrrr#wwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww#rrrrrrrr#wwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwfffwww...wwf.....fwwwwwwwwwwwwww..............wwwwwwwwwwwwwwwwwwwwwwwf..",
+    "fff..ff..ff....ff.......ffffwwwwff.fff.fff................ffffffffwwwwfff.ffff.",
+    "fff..f....ffffff...ffff...f..ffff....fff.f................f....ff..ff...fff..f.",
+    "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+    "......ff........ff............ff..fff.ff.f..fff.ff..ff..ff.ff........ff........",
+    "f.ff.ffff...ff..fff.ff..fff..fff..f.f.fffffffff.fff.fff.fffff..fff..ffff.ff....",
+    "ffffff..fffffffffffffffff.f.ff..f...ffffffff.ff....fffffff.f.....ffff..fffffff.",
+    "ffffff.......fff...f..ffffff...ffffff.f.f.f..ffffffff....ff.ffffff..ffff....ff."
   ]
 }

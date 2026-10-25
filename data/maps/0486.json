@@ -1,5 +1,6 @@
 {
   "screen": 486,
+  "name": "Port City",
   "kind": 3,
   "tiles": [
     " ║  ♠                               ♠ ♠       ♠               █████            ",
@@ -96,5 +97,29 @@
     "##################################.############################################",
     "##################################.############################################",
     "###############################################################################"
+  ],
+  "terrain": [
+    ".#..f.....................rr........f.f.......f...............wwwwwwwwwwwwwwwww",
+    ".#.......f......#.........rr..f...............................wwwwwwwwwwwwwwwww",
+    ".#....f........###........rr................................wwwwwwwwwwwwwwwwwww",
+    ".#...........######.f.....rr......f.............f..........fwwwwwwwwwwwwwwwwwww",
+    ".#...........###_###......rr.....f........f...................wwwwwwwwwwwwwwwww",
+    ".###.rrrrrrrrrrrrrrrrrrrrrrr................#########.........wwwwwwwwwwwwwwwww",
+    ".###.rr..........................f.....ff....#######.....f....wwwwwwwwwwwwwwwww",
+    ".###.rr......#######................f........#######..........wwwwwwwwwwwwwwwww",
+    "rrrrrrr....###########..............f...rrrrrrrrrrrrrrr...rrrrrrrrrrrrrrrrrrrww",
+    ".###.rr.....wwwwwwwww.......f..###..f...rr...f..f.........rrrrrrrrrrrrrrrrrrrww",
+    ".###.rr.....ww#wwwwww..........#_#......rr..................wwrrwwwwwwwwwrrrrww",
+    "f###.rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr.................fwwrrwww###wwwrrrrww",
+    ".#f.......................................................wwwwrrww##r##wwrrrrww",
+    ".#.............................ff...###.................wwwwwwrrrrrrrr#wwrrrrww",
+    ".#.......w............ww.ww.w...w.r.#_#...w.wwww.www.wwwwwwwwwrrww#rrr#wwrrrrww",
+    ".#.....www.ww.wwwwwww.www.www.www.rrrrww.wwwwwwwwwwwwwwwwwwwwwrrww#####wwrrrrww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrwwwwwwwwwwwwwwwwwwwwwwwwwwwrrwwwwwwwwwrrrrww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwrwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+    "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
   ]
 }

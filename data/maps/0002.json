@@ -1,5 +1,6 @@
 {
   "screen": 2,
+  "name": "North of Stone Valley",
   "kind": 5,
   "tiles": [
     "♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠",
@@ -96,5 +97,29 @@
     "#############################..............####################################",
     "##############################............#####################################",
     "###############################..........######################################"
+  ],
+  "terrain": [
+    "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "........ff.ffff..ffffffffffffffffffffffffffffffffffffffffffffffffffffff..ffffff",
+    "........................................................................ff...ff",
+    "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+    "..................................rr..................................ff.f..fff",
+    "ffffffffff.....................#..rr.....................ffffffffffffffffffffff",
+    "fffffffffff........f.....f........rr.......####.......fffffffffffffffffffffffff",
+    "ffffffffffff...............f......rr.......#__#.......fffffffffffffffffffffffff",
+    "fffffffffffff............f........rr..................fffffffffffffffffffffffff",
+    "fffffffffffff...............f....rrrr.........f.....fffffffffffffffffffffffffff",
+    "fffffffffffffffffffff.......f...rrrrrr.............ffffffffffffffffffffffffffff",
+    "fffffffffffffffffffffff.....f..rrr##rrr...f.......fffffffffffffffffffffffffffff",
+    "ffffffffffffffffffffffff....f...rrrrrr...........ffffffffffffffffffffffffffffff",
+    "fffffffffffffffffffffffff........rrrr...........fffffffffffffffffffffffffffffff",
+    "fffffffffffffffffffffffff.........rr...........ffffffffffffffffffffffffffffffff",
+    "ffffffffffffffffffffffffff........rr..........fffffffffffffffffffffffffffffffff",
+    "fffffffffffffffffffffffffff.......rr.........ffffffffffffffffffffffffffffffffff",
+    "ffffffffffffffffffffffffffff......rr........fffffffffffffffffffffffffffffffffff",
+    "fffffffffffffffffffffffffffff.....rr.......ffffffffffffffffffffffffffffffffffff",
+    "fffffffffffffffffffffffffffff.....rr.......ffffffffffffffffffffffffffffffffffff",
+    "ffffffffffffffffffffffffffffff....rr......fffffffffffffffffffffffffffffffffffff",
+    "fffffffffffffffffffffffffffffff...rr.....ffffffffffffffffffffffffffffffffffffff"
   ]
 }

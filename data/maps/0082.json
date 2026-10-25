@@ -1,5 +1,6 @@
 {
   "screen": 82,
+  "name": "Stone Valley",
   "kind": 3,
   "tiles": [
     "♠♠♠ ♠ ♠♠ ♠♠ ♠  ♠♠♠ ♠ ♠ ♠♠ ♠♠♠♠♠          ♠♠♠  ♠♠     ♠♠♠♠  ♠♠ ♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠♠",
@@ -96,5 +97,29 @@
     "..#...#####.#..#.#######..#.#####.############..###....##..########..#..###...#",
     "..#.##############..####....##...##..#....####.##.##.#######....#######...#...#",
     "#.......####.#....#..##.######.###.####....#..##..#####.###................###."
+  ],
+  "terrain": [
+    "fff.f.ff.ff.f..fff.f.f.ff.fffff...rr.....fff..ff.....ffff..ff.fffffffffffffffff",
+    "....ff..f..ff.fffff...f..f....ff##rr##ffff.f..fff..ff..ff.ff......ff...fff...ff",
+    "f..fff.ffff.ff..f.f.ff.f.ff....###rr###.....fff..ff...fffff.ffffff..fff.......f",
+    "f.ff.ffffffff...fffffffff.f.......rr.........f..ffffffffffffffffff...ff.fff...f",
+    ".ff..f.......................f....rr.......f.....f..f....fffffffffff..fff.f.f.f",
+    "f.ff.f........###............f....rr.......f.........................fff...f..f",
+    "f.f..f.......#####.............#..rr..................#######..........ff..f..f",
+    ".ff..f.f....###.###.........f.....rr..................#.....#...........ffff..f",
+    ".ff..fff....#######..............frr...f..............#######.............fffff",
+    "...ffff...rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr....f.ffff",
+    "f..f..ff........rr...............ff...........f.......rr.................ffff.f",
+    "f.ff..fff.......rr......f........................f....rr...ff.....f.....fffff.f",
+    ".f...fff........rr......###...ff..fff.......f.ffff....rr...........f...ff..f..f",
+    "..f..f.fff......rr......###...f.......................rr....f.............ff..f",
+    "..f..fff.....f..rrrrrrrrrr.............#######........rr................ff.f..f",
+    ".ff.ff...###.fffrrff...................#.....#........rr....######......ff.ff.f",
+    "..f..f...###.ff.rr..........f..........#######........rr....######....fff..f..f",
+    "f..fff...rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr..........f.f",
+    "...ffff........f......ff....f..............fff...ff..............ff..fff..ff..f",
+    "..f...fffff.f..f.fffffff..#.fffff.ffffffffffff..fff....ff..ffffffff..f..fff...f",
+    "..f.ffffffffffffff..ffff....ff...ff..f....ffff.ff.ff.fffffff....fffffff...f...f",
+    "f.......ffff.f....f..ff.ffffff.fff.ffff....f..ff..fffff.fff................fff."
   ]
 }
