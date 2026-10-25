@@ -5,6 +5,7 @@
   "scripts": {
     "start": "bun fq2.ts",
     "debug": "bun fq2.ts --debug",
+    "server": "bun server.ts",
     "edit": "bun tools/edit.ts",
     "generate": "bun tools/generate.ts",
     "view": "bun tools/view.ts",

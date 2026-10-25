@@ -7,12 +7,17 @@ export const NAME_LENGTH = 20;
 
 export async function newGame(g: G): Promise<void> {
     g.cls();
-    g.print('{yellow}{center}A new adventure begins', '', '{green}What is your name, adventurer?');
-    let name = '';
-    while (!name) {
-        name = (await g.input({ x: 1, y: 4, length: NAME_LENGTH + 1 })).trim();
+    g.print('{yellow}{center}A new adventure begins', '');
+    // (On a server the player already has a name: their account's.)
+    if (!g.name) {
+        g.print('{green}What is your name, adventurer?');
+        let name = '';
+        while (!name) {
+            name = (await g.input({ x: 1, y: 4, length: NAME_LENGTH + 1 })).trim();
+        }
+        g.name = name;
     }
-    g.name = name;
+
     g.print('{y 6}{green}And are you...', '');
     g.sex = (await g.choice(['A man', 'A woman'])) === 1 ? 'female' : 'male';
 
