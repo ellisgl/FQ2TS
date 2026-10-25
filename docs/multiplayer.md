@@ -87,6 +87,13 @@ Each phase ends playable, tested and committed.
   - Bun 1.3's `server.stop()` promise never settles once a web socket has
     connected (it does stop listening), so shutdown doesn't wait on it.
   - An account's name is its player's name; a new game doesn't ask again.
+  - Every account has an email address, confirmed with a 6-digit code
+    before it can play (accounts from before this are asked for one when
+    they log in). "Forgot password" on the login menu emails a reset code.
+    Codes work for 15 minutes and 5 guesses and are stored hashed; another
+    can be sent after a minute, and one connection can send 5 emails.
+    Mail goes through SMTP (nodemailer), or into the log without
+    `--smtp-host`.
 
 ## Testing
 
