@@ -292,3 +292,22 @@ describe('healer', () => {
         expect(g.hp).toBe(100);
     });
 });
+
+test("Master Roshi's words fit the player", async () => {
+    const fight = spyOn(ScriptContext.prototype, 'fight').mockResolvedValue('won');
+    const { g, term } = scriptContext({
+        player: newPlayer({ sex: 'female' }),
+        steps: [
+            () => {
+                expect(screenText(term.screen)).toContain('Psst, hey, girl!!');
+                return 'enter';
+            },
+            () => {
+                expect(screenText(term.screen)).toContain('You are a great woman.. YOU HAVE BESTED ME!');
+                return 'x';
+            },
+        ],
+    });
+    await roshi(g);
+    fight.mockRestore();
+});
