@@ -123,6 +123,17 @@ Each phase ends playable, tested and committed.
     are checked and made again.
   - Server tests keep a model of each client's screen (the server sends
     only what changed), and look for text on that.
+- **Phase 3: done.** T says something to the players on your screen, Y
+  yells it to everyone, W reads and writes letters (to anyone, online or
+  not; you're told of new ones as you arrive), D is the news of today and
+  yesterday (who's come to the realm, who was beaten by what). What's said
+  goes in the back-buffer (B) with the other messages.
+  - Players can speak once a second, a visit can send 10 letters, a
+    mailbox keeps 50 and the news 7 days, so none of it grows without end.
+  - What players type is escaped, so it can't colour anyone's screen.
+  - The engine's `g.askLine` asks on the status bar (the map stays), and
+    `g.ask` is `g.input` that Escape cancels. A message with more waiting
+    behind it shows for 1.5 seconds instead of 4.
 
 ## Testing
 
