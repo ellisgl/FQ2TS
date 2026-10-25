@@ -8,7 +8,7 @@ import { Terminal } from "./engine/terminal.ts";
 import { World } from "./engine/world.ts";
 import { Saves } from "./engine/saves.ts";
 import { Game, readConfig } from "./engine/game.ts";
-import { readMonsterTable } from "./engine/combat.ts";
+import { readBestiary } from "./engine/combat.ts";
 import { readItems } from "./engine/items.ts";
 import content from "./content/index.ts";
 
@@ -25,7 +25,7 @@ try {
     term: new Terminal(),
     world: World.load(join(root, "data", "maps")),
     config: readConfig(readJson("config.json")),
-    monsters: readMonsterTable(readJson("monsters.json")),
+    monsters: readBestiary(readJson("monsters.json")),
     items: readItems(readJson("items.json")),
     content,
     saves: new Saves(join(root, "saves")),
