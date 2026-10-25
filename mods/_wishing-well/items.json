@@ -1,0 +1,9 @@
+[
+  {
+    "id": "lucky-coin",
+    "name": "Lucky Coin",
+    "kind": "misc",
+    "value": 10,
+    "description": "From the bottom of the wishing well. It feels warm."
+  }
+]

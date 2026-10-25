@@ -1,33 +1,33 @@
 #!/usr/bin/env bun
-// Final Quest 2 -- run with:  bun fq2.ts [--debug]
+// Final Quest 2 -- run with:  bun fq2.ts [--debug] [--mods DIR]
 // or: bun start / bun run debug
+//
+// Mods come from DIR, or the mods folder where the game is started, if
+// there is one (see @fq2js/engine/mods).
 
-import { join } from 'node:path';
-import { readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { Terminal } from '@fq2js/engine/terminal';
-import { World } from '@fq2js/engine/world';
 import { Saves } from '@fq2js/engine/saves';
-import { Game, readConfig } from '@fq2js/engine/game';
-import { readBestiary } from '@fq2js/engine/combat';
-import { readItems } from '@fq2js/engine/items';
+import { Game } from '@fq2js/engine/game';
+import { readGameData } from '@fq2js/engine/data';
+import { applyMods, loadMods } from '@fq2js/engine/mods';
 import content from './content/index.ts';
 
 const args = process.argv.slice(2);
 const debug = args.includes('--debug') || args.some((a) => a.toLowerCase() === '-debugmode');
+const modsAt = args.indexOf('--mods');
+const modsDir = resolve(modsAt >= 0 ? (args[modsAt + 1] ?? 'mods') : 'mods');
 const root = import.meta.dir;
-const readJson = (file: string): unknown => JSON.parse(readFileSync(join(root, 'data', file), 'utf8'));
 
-// Load (and check) all the data before taking over the terminal, so that
-// errors are readable.
+// Load (and check) all the data and mods before taking over the terminal,
+// so that errors are readable.
 let game;
 try {
+    const { config, ...data } = readGameData(join(root, 'data'));
     game = new Game({
         term: new Terminal({ name: 'Final Quest 2' }),
-        world: World.load(join(root, 'data', 'maps')),
-        config: readConfig(readJson('config.json')),
-        monsters: readBestiary(readJson('monsters.json')),
-        items: readItems(readJson('items.json')),
-        content,
+        config,
+        ...applyMods({ content, ...data }, await loadMods(modsDir)),
         saves: new Saves(join(root, 'saves')),
         debug,
     });
