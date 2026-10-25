@@ -47,7 +47,7 @@ Every option can also be set as an environment variable (`--smtp-host` is `FQ2_S
 
 Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use SSH, or the web page behind HTTPS (`--no-telnet` turns telnet off). The server makes its SSH host key the first time, in `server-data/ssh_host_ed25519_key`; keep it, or players' SSH clients will warn that the server has changed.
 
-(ssh2 is patched, in [patches/](patches/), not to load its optional native add-ons: Bun crashes loading them. It works without them.) Players see each other on the map (☻), hear when someone enters or leaves the realm, and can press P for who's in the realm and L for every player, ranked; talking comes next (see [docs/multiplayer.md](docs/multiplayer.md)). The cheat words are off on the server.
+(ssh2 is patched, in [patches/](patches/), not to load its optional native add-ons: Bun crashes loading them. It works without them.) Players see each other on the map (☻) and hear when someone enters or leaves the realm. On the server, T says something to the players on your screen, Y yells to everyone, W reads and writes letters, D shows the daily news, P lists who's in the realm and L ranks every player; ? lists them all. The cheat words are off on the server. See [docs/multiplayer.md](docs/multiplayer.md) for what's next.
 
 ## Mods
 
