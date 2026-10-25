@@ -82,7 +82,7 @@ Each phase ends playable, tested and committed.
 
 - **Phase 0: done.** `autosave`, `Game.showingMap`, `escapeMarkup`.
 - **Phase 1: done.** `bun run server` (see the README). Notes:
-  - Telnet output is UTF-8 only for now (open question 1).
+  - Telnet output is UTF-8 only (open question 1, decided).
   - The server listens on 127.0.0.1 unless given `--host`.
   - Bun 1.3's `server.stop()` promise never settles once a web socket has
     connected (it does stop listening), so shutdown doesn't wait on it.
@@ -97,8 +97,9 @@ Each phase ends playable, tested and committed.
 
 ## Open questions
 
-1. **Telnet character set.** BBS clients (SyncTERM...) expect CP437 bytes;
-   modern terminals expect UTF-8. Probably both, per account or detected.
+1. ~~**Telnet character set.**~~ Decided: UTF-8 only. The game uses
+   Unicode throughout (any character one column wide), not CP437, so
+   CP437-only BBS clients aren't supported.
 2. **Which flags become world-wide.** The castle owner, clearly; the barn
    gold and the minigun are open.
 3. **PvP rules.** What the loser loses, and whether offline players can be

@@ -24,6 +24,8 @@ Saved games go to `saves/` as JSON. Set `FQ2_COLORS=16` if your terminal lacks t
 
 While exploring: arrows (or 8 4 6 2) walk, **I** or **V** shows your stats and inventory (pick an item to use, equip or drop it), **M** the world map, **B** the last messages, **R** redraws the screen, **?** lists the keys and **Esc** goes back to the title menu.
 
+Text and maps are Unicode (UTF-8): a map cell can hold any character one column wide (letters with accents, Greek, Cyrillic, box drawing, blocks, symbols...), but not wide ones like emoji or CJK, which would put the screen out of line. Anything that doesn't fit a cell is shown as `?`.
+
 Items are defined in `data/items.json` and monsters and encounter tables in `data/monsters.json`.
 
 ## Multiplayer server
@@ -47,7 +49,7 @@ bun run view                       # write world.html: the whole world, to open 
 bun tools/view.ts -s 82,721-726    # only some screens (-o sets the output file, -h for help)
 ```
 
-The editor opens on an overview of the whole 80x24 world grid, one cell per screen, coloured by kind. From there you can create, copy, delete and re-kind screens, and press Enter to edit one. Screens are painted with a brush (character, colours, and whether it's solid) using the keyboard or the mouse. Left-drag paints, right-drag selects, and a middle click picks up a cell as the brush. The bottom row is a palette: click the brush for the character picker, a colour to use it, or HARD/SOFT to switch. In the overview, click a screen to select it and click again to open it. There's a CP437 character picker, rectangle selections with fill, copy and stamp, undo/redo, and overlays for solid cells and trigger tiles. S saves to `data/maps/`, and only screens that changed are rewritten.
+The editor opens on an overview of the whole 80x24 world grid, one cell per screen, coloured by kind. From there you can create, copy, delete and re-kind screens, and press Enter to edit one. Screens are painted with a brush (character, colours, and whether it's solid) using the keyboard or the mouse. Left-drag paints, right-drag selects, and a middle click picks up a cell as the brush. The bottom row is a palette: click the brush for the character picker, a colour to use it, or HARD/SOFT to switch. In the overview, click a screen to select it and click again to open it. There's a character picker (pages of box drawing, blocks, symbols, arrows, letters and more; or type any character, or give its code point with Tab), rectangle selections with fill, copy and stamp, undo/redo, and overlays for solid cells and trigger tiles. S saves to `data/maps/`, and only screens that changed are rewritten.
 
 The viewer lays the outdoor screens out where they sit on the world grid and lists the interiors after them, in their real characters and colours. It can zoom, and outline solid cells and trigger tiles.
 
