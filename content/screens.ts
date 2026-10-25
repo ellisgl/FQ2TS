@@ -263,8 +263,13 @@ export const screens: Content<Flags>["screens"] = {
       "31,16": door(82, 26, 15),
       ...tiles(["23,9", "24,9"], say("{lightcyan}The bed feels hard and very unconfortable...")),
       "33,13"(g) {
-        g.write("{lightcyan}You find a Minigun on the table!");
-        g.weapon = { name: "Minigun", power: 10000, value: 100000 };
+        if (g.flags.foundMinigun) {
+          g.write("{lightcyan}An empty table.");
+          return;
+        }
+        g.flags.foundMinigun = true;
+        g.give("minigun");
+        g.write("{lightcyan}You find a Minigun on the table! {gray}(I to equip it)");
       },
     },
   },

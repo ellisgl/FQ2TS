@@ -13,14 +13,20 @@ describe("berries", () => {
   test("picking 5 at a time, up to 25", () => {
     const { g, term } = scriptContext();
     berries(g);
-    expect(g.flags.berries).toBe(5);
+    expect(g.count("wildberries")).toBe(5);
     expect(row(term.screen, 23)).toContain("You pick some wildberries...");
     for (let i = 0; i < 4; i++) berries(g);
-    expect(g.flags.berries).toBe(25);
+    expect(g.count("wildberries")).toBe(25);
     expect(row(term.screen, 23)).toContain("You pick some more wildberries...");
     berries(g);
-    expect(g.flags.berries).toBe(25);
+    expect(g.count("wildberries")).toBe(25);
     expect(row(term.screen, 23)).toContain("Don't you think you have enough?");
+  });
+
+  test("tops up to 25 after some were eaten", () => {
+    const { g } = scriptContext({ player: newPlayer({ items: { wildberries: 23 } }) });
+    berries(g);
+    expect(g.count("wildberries")).toBe(25);
   });
 });
 
@@ -131,13 +137,13 @@ describe("Master Roshi", () => {
     }] });
     await roshi(g);
     expect(fight).toHaveBeenCalledWith(expect.objectContaining({ name: "Master Roshi", hp: 350 }));
-    expect(g.flags.hasPortCityPass).toBe(true);
+    expect(g.has("port-city-pass")).toBe(true);
     expect([g.maxHp, g.hp, g.strength, g.defense]).toEqual([275, 275, 20, 20]);
   });
 
   test("a rematch", async () => {
     fightResult("won");
-    const { g, term } = scriptContext({ player: newPlayer({}, { hasPortCityPass: true }), steps: [() => {
+    const { g, term } = scriptContext({ player: newPlayer({ items: { "port-city-pass": 1 } }), steps: [() => {
       expect(row(term.screen, 1)).toBe("Master Roshi says:");
       return "enter";
     }, () => {
@@ -146,13 +152,23 @@ describe("Master Roshi", () => {
     }] });
     await roshi(g);
     expect(g.strength).toBe(20);
+    expect(g.count("port-city-pass")).toBe(1);
+  });
+
+  test("lists what you're carrying", async () => {
+    fightResult("fled");
+    const { g, term } = scriptContext({ player: newPlayer({ items: { stick: 1 }, weapon: "stick" }), steps: [() => {
+      expect(screenText(term.screen)).toContain("You have a Stick and nothing.");
+      return "escape";
+    }] });
+    await roshi(g);
   });
 
   test("losing", async () => {
     fightResult("fled");
     const { g, term } = scriptContext({ steps: [...pick(0), "x"] });
     await roshi(g);
-    expect(g.flags.hasPortCityPass).toBe(false);
+    expect(g.has("port-city-pass")).toBe(false);
     expect(g.strength).toBe(10);
     expect(row(term.screen, 1)).toContain("You loose");
   });

@@ -3,7 +3,7 @@ import { credits, help, inventory, statusLine, title, worldMapLegend } from "../
 import { newGame } from "../../content/story.ts";
 import { draw } from "../../engine/text.ts";
 import { Screen } from "../../engine/screen.ts";
-import { config, newPlayer, row, screenText, scriptContext } from "../helpers.ts";
+import { config, newPlayer, pick, row, screenText, scriptContext } from "../helpers.ts";
 
 function drawn(lines: readonly string[]): string {
   const screen = new Screen();
@@ -42,32 +42,109 @@ test("the status line", () => {
 });
 
 describe("inventory", () => {
-  test("lists the player's things", () => {
-    const { g, term } = scriptContext({ player: newPlayer({ exp: 9, weapon: { name: "Stick", power: 1, value: 1 } }) });
-    inventory(g);
-    const text = screenText(term.screen);
-    expect(text).toContain("Experience: 9");
-    expect(text).toContain("Weapon: Stick");
-    expect(text).not.toContain("Gold in Bank");
-    expect(text).not.toContain("Wildberries");
-    expect(row(term.screen, 17)).toContain("└");
+  const DONE = "escape";
+
+  test("lists the player's stats and items", async () => {
+    const { g, term } = scriptContext({
+      player: newPlayer({ exp: 9, items: { stick: 1, wildberries: 10, "port-city-pass": 1 }, weapon: "stick" }),
+      steps: [
+        () => {
+          const text = screenText(term.screen);
+          expect(text).toContain("Experience 9   Hitpoints 250/250   Gold $50");
+          expect(text).not.toContain("Bank");
+          expect(text).toContain("Weapon Stick   Armour nothing");
+          expect(row(term.screen, 9)).toStartWith("Stick               (in use) A sturdy stick.");
+          expect(row(term.screen, 10)).toStartWith("Wildberries x10     Small, sweet");
+          expect(row(term.screen, 11)).toStartWith("Port City Pass      (quest) Lets you through");
+          expect(row(term.screen, 12)).toBe("Done");
+          return DONE;
+        },
+      ],
+    });
+    await inventory(g);
+    expect(term.remaining).toBe(0);
   });
 
-  test("bank gold and berries only when there are some", () => {
-    const { g, term } = scriptContext({ player: newPlayer({}, { hasBankAccount: true, bankGold: 40, berries: 10 }) });
-    inventory(g);
-    const text = screenText(term.screen);
-    expect(text).toContain("Gold in Bank: $40");
-    expect(text).toContain("Wildberries: 10");
-    expect(row(term.screen, 19)).toContain("└");
+  test("shows the bank balance with an account, and says when you carry nothing", async () => {
+    const { g, term } = scriptContext({
+      player: newPlayer({}, { hasBankAccount: true, bankGold: 40 }),
+      steps: [
+        () => {
+          expect(screenText(term.screen)).toContain("Bank $40");
+          expect(screenText(term.screen)).toContain("You aren't carrying anything.");
+          return DONE;
+        },
+      ],
+    });
+    await inventory(g);
+  });
+
+  test("equipping and putting away weapons", async () => {
+    const { g, term } = scriptContext({
+      player: newPlayer({ items: { stick: 1, shotgun: 1 }, weapon: "stick" }),
+      steps: [
+        ...pick(1),
+        ...pick(0),
+        () => {
+          expect(row(term.screen, 7)).toBe("You ready your Shotgun.");
+          return "down";
+        },
+        "enter",
+        ...pick(0),
+        DONE,
+      ],
+    });
+    await inventory(g);
+    expect(g.weapon).toBeNull();
+    expect(g.count("shotgun")).toBe(1);
+  });
+
+  test("using an item", async () => {
+    const { g, term } = scriptContext({
+      player: newPlayer({ hp: 100, items: { wildberries: 2 } }),
+      steps: [
+        ...pick(0),
+        ...pick(0),
+        () => {
+          expect(row(term.screen, 7)).toBe("You eat some wildberries. Delicious! (+5 hitpoints)");
+          return DONE;
+        },
+      ],
+    });
+    await inventory(g);
+    expect(g.hp).toBe(105);
+    expect(g.count("wildberries")).toBe(1);
+  });
+
+  test("dropping an item, and changing your mind", async () => {
+    const { g } = scriptContext({ player: newPlayer({ items: { vest: 1 }, armour: "vest" }), steps: [...pick(0), ...pick(2), ...pick(0), ...pick(1), DONE] });
+    await inventory(g);
+    expect(g.count("vest")).toBe(0);
+    expect(g.armour).toBeNull();
+  });
+
+  test("quest items can't be dropped", async () => {
+    const { g, term } = scriptContext({
+      player: newPlayer({ items: { "port-city-pass": 1 } }),
+      steps: [
+        ...pick(0),
+        () => {
+          expect(row(term.screen, 4)).toBe("Never mind");
+          return "enter";
+        },
+        DONE,
+      ],
+    });
+    await inventory(g);
+    expect(g.count("port-city-pass")).toBe(1);
   });
 });
 
 test("a new game starts with a stick and a vest", async () => {
   const { g, term } = scriptContext({ steps: ["x"] });
   await newGame(g);
-  expect(g.weapon.name).toBe("Stick");
-  expect(g.armour.name).toBe("Vest");
+  expect(g.weapon?.name).toBe("Stick");
+  expect(g.armour?.name).toBe("Vest");
   expect(row(term.screen, 1)).toContain("put on your Vest, and strap your Stick to");
   expect(term.remaining).toBe(0);
 });

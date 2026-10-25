@@ -5,6 +5,7 @@ import { COLORS } from "../engine/screen.ts";
 import { at } from "../engine/assert.ts";
 import type { Config, Content } from "../engine/game.ts";
 import type { Player } from "../engine/player.ts";
+import type { ItemDef } from "../engine/items.ts";
 import type { Flags, G } from "./start.ts";
 
 export const title: Content<Flags>["title"] = {
@@ -106,32 +107,73 @@ export const worldMapLegend: readonly string[] = [
 export const statusLine = (p: Player<Flags>, { title, companyShort }: Config): string =>
   `${title} -- By ${companyShort} -- HP (${p.hp}/${p.maxHp}) -- Gold: ${p.gold}!`;
 
-export function inventory(g: G): void {
-  const rows = [
-    `{white}Experience: ${g.exp}`,
-    `{white}Hitpoints: {lightred}${g.hp}`,
-    `{white}Gold: {yellow}$${g.gold}`,
-    g.flags.hasBankAccount && `{white}Gold in Bank: {yellow}$${g.flags.bankGold}`,
-    `{white}Strength: {lightcyan}${g.strength}`,
-    `{white}Defense: {lightcyan}${g.defense}`,
-    `{white}Weapon: {lightmagenta}${g.weapon.name}`,
-    `{white}Armour: {lightmagenta}${g.armour.name}`,
-    g.flags.berries > 0 && `{white}Wildberries: {red}${g.flags.berries}`,
-  ].filter((row) => row !== false);
+// The inventory (I): the player's stats and items. Picking an item offers
+// what can be done with it.
+export async function inventory(g: G): Promise<void> {
+  let message = "";
+  for (;;) {
+    g.cls();
+    const bank = g.flags.hasBankAccount ? `   {white}Bank {yellow}$${g.flags.bankGold}` : "";
+    g.print(
+      "{yellow}{center}Inventory",
+      "",
+      `{white}Experience {lightcyan}${g.exp}   {white}Hitpoints {lightred}${g.hp}/${g.maxHp}   {white}Gold {yellow}$${g.gold}${bank}`,
+      `{white}Strength {lightcyan}${g.strength}   {white}Defense {lightcyan}${g.defense}`,
+      `{white}Weapon {lightmagenta}${g.weapon?.name ?? "nothing"}   {white}Armour {lightmagenta}${g.armour?.name ?? "nothing"}`,
+      "",
+      message ? `{yellow}${message}` : "{green}Pick an item to see what you can do with it.",
+      "",
+    );
+    message = "";
+    const entries = g.inventory;
+    const labels = entries.map(({ item, count }) => {
+      const name = `${item.name}${count > 1 ? ` x${count}` : ""}`.padEnd(20);
+      const worn = g.weapon?.id === item.id || g.armour?.id === item.id;
+      const note = worn ? "{lightgreen}(in use) " : item.kind === "quest" ? "{yellow}(quest) " : "";
+      return `{white}${name}${note}{gray}${item.description}`.slice(0, 110);
+    });
+    if (!entries.length) g.print("{gray}You aren't carrying anything.", "");
+    const picked = entries[await g.choice([...labels, "{white}Done"])];
+    if (!picked) return;
+    message = await itemActions(g, picked.item);
+  }
+}
 
-  g.overlay("{y 3}{x 7}{white}┌───────────────────┐");
-  g.overlay("{y 4}{x 3}{on blue}    {on black}{white}│{x 13}Inventory{x 27}│{on blue}    ");
-  g.overlay("{y 5}{x 7}{white}└───────────────────┘");
-
-  const top = 7;
-  const bottom = top + rows.length + 3;
-  g.overlay(`{y ${top}}{x 14}{white}{on blue}┌${"─".repeat(53)}┐`);
-  for (let y = top + 1; y < bottom; y++) g.overlay(`{y ${y}}{x 14}{white}{on blue}│${" ".repeat(53)}│`);
-  g.overlay(`{y ${bottom}}{x 14}{white}{on blue}└${"─".repeat(53)}┘`);
-  rows.forEach((row, i) => g.overlay(`{y ${top + 2 + i}}{x 17}${row}`));
-
-  const key = bottom + 2;
-  g.overlay(`{y ${key}}{x 54}{white}┌───────────────────┐`);
-  g.overlay(`{y ${key + 1}}{x 50}{on blue}    {on black}{white}│   Press a Key..   │{on blue}    `);
-  g.overlay(`{y ${key + 2}}{x 54}{white}└───────────────────┘`);
+// The things that can be done with an item. Returns what happened.
+async function itemActions(g: G, item: ItemDef): Promise<string> {
+  const actions: [string, () => string][] = [];
+  if (item.kind === "weapon" || item.kind === "armour") {
+    const slot = item.kind;
+    if (g[slot]?.id === item.id) {
+      actions.push([
+        "Stop using it",
+        () => {
+          g.unequip(slot);
+          return `You put away your ${item.name}.`;
+        },
+      ]);
+    } else {
+      actions.push([
+        "Use it",
+        () => {
+          g.equip(item.id);
+          return `You ready your ${item.name}.`;
+        },
+      ]);
+    }
+  }
+  if (item.kind === "usable") actions.push(["Use it", () => g.use(item.id)]);
+  if (item.kind !== "quest") {
+    actions.push([
+      "Drop one",
+      () => {
+        g.take(item.id);
+        return `You drop the ${item.name}.`;
+      },
+    ]);
+  }
+  g.cls();
+  g.print(`{white}${item.name}`, `{gray}${item.description}`, "");
+  const action = actions[await g.choice([...actions.map(([label]) => label), "Never mind"])];
+  return action ? action[1]() : "";
 }

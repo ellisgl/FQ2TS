@@ -1,16 +1,22 @@
 // Town services: berries, banks, travel offices, Master Roshi and the healer.
 
+import type { ItemDef } from "../../engine/items.ts";
 import type { G, Script } from "../start.ts";
 
 const CONTINUE = "{lightgreen}<{green}Continue{lightgreen}>";
 
+// "a Stick" or "nothing", in colour.
+const gear = (item: ItemDef | null): string => (item ? `a {lightmagenta}${item.name}{green}` : "{lightmagenta}nothing{green}");
+
+// Five at a time, up to 25.
 export function berries(g: G): void {
-  if (g.flags.berries === 0) {
+  const have = g.count("wildberries");
+  if (have === 0) {
     g.write("{white}You pick some wildberries...");
-    g.flags.berries = 5;
-  } else if (g.flags.berries < 25) {
+    g.give("wildberries", 5);
+  } else if (have < 25) {
     g.write("{white}You pick some more wildberries...");
-    g.flags.berries += 5;
+    g.give("wildberries", Math.min(5, 25 - have));
   } else {
     g.write("{white}Don't you think you have enough?");
   }
@@ -111,7 +117,6 @@ export const travelOffice = ({ name, destination, cost, to }: TravelOffice): Scr
   };
 
 export async function roshi(g: G): Promise<void> {
-  const f = g.flags;
   const stats = (): string[] => [
     "{green}You have:",
     "",
@@ -119,12 +124,13 @@ export async function roshi(g: G): Promise<void> {
     `{lightred}${g.hp}{green} hitpoints...`,
     `{lightcyan}${g.strength}{green} attack points...`,
     `{lightcyan}${g.defense}{green} defense points...`,
-    `{green}You have a {lightmagenta}${g.weapon.name}{green} and a {lightmagenta}${g.armour.name}{green}.`,
+    `{green}You have ${gear(g.weapon)} and ${gear(g.armour)}.`,
     "",
   ];
 
   g.cls();
-  if (!f.hasPortCityPass) {
+  const hadPass = g.has("port-city-pass");
+  if (!hadPass) {
     g.print("{yellow}A Man Says:", "{green}Psst, hey, boy!! If you beat me, I'll give you a pass to {gray}Port City{green}!", "", ...stats());
   } else {
     g.print("{yellow}Master Roshi says:", "{green}Welcome back!! Ready for a rematch!!!!", "", ...stats());
@@ -150,7 +156,7 @@ export async function roshi(g: G): Promise<void> {
     `{green}You get {lightcyan}10 {green}extra defense points for a total of {lightcyan}${g.defense}{green}.`,
     "",
   ];
-  if (!f.hasPortCityPass) {
+  if (!hadPass) {
     g.print(
       "{yellow}You are a great man.. YOU HAVE BESTED ME!",
       "",
@@ -161,7 +167,7 @@ export async function roshi(g: G): Promise<void> {
   } else {
     g.print("{yellow}Hey!! You beat me again!", "", ...rewards, "Press any key...");
   }
-  f.hasPortCityPass = true;
+  if (!hadPass) g.give("port-city-pass");
   await g.key();
 }
 

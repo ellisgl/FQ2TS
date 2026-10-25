@@ -9,7 +9,6 @@ export type Flags = {
   toiletUsed: boolean;
   goldNearBarn: boolean;
   womanOffersCocoa: boolean;
-  berries: number;
   hasBankAccount: boolean;
   bankGold: number;
   // 0: not seen, 1: the guard scene has played, 2: the man has run off.
@@ -18,8 +17,8 @@ export type Flags = {
   // Which of the castle's two doors the player last left by.
   castleExitX: number;
   oldManSeen: boolean;
-  hasPortCityPass: boolean;
   hadDrink: boolean;
+  foundMinigun: boolean;
 };
 
 // What scripts get, and what they are.
@@ -37,22 +36,35 @@ export const start: Player<Flags> = {
   strength: 10,
   defense: 10,
   exp: 0,
-  weapon: { name: "Nothing", power: 0, value: 0 },
-  armour: { name: "Nothing", power: 0, value: 0 },
+  items: {},
+  weapon: null,
+  armour: null,
   monsters: false,
   superhuman: false,
   flags: {
     toiletUsed: false,
     goldNearBarn: true,
     womanOffersCocoa: true,
-    berries: 0,
     hasBankAccount: false,
     bankGold: 0,
     hotelScene: 0,
     ownsCastle: false,
     castleExitX: 41,
     oldManSeen: false,
-    hasPortCityPass: false,
     hadDrink: false,
+    foundMinigun: false,
   },
 };
+
+// Saves from before the item catalogue kept wildberries and the Port City
+// pass as flags; they're items now.
+export function upgradeSave(saved: unknown, player: Player<Flags>): void {
+  if (typeof saved !== "object" || saved === null || !("flags" in saved)) return;
+  const flags = saved.flags;
+  if (typeof flags !== "object" || flags === null) return;
+  const berries = "berries" in flags ? flags.berries : undefined;
+  if (typeof berries === "number" && berries > 0 && player.items["wildberries"] === undefined) {
+    player.items["wildberries"] = Math.min(25, Math.trunc(berries));
+  }
+  if ("hasPortCityPass" in flags && flags.hasPortCityPass === true) player.items["port-city-pass"] = 1;
+}

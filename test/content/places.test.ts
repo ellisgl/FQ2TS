@@ -127,7 +127,7 @@ describe("the Port City guards", () => {
   });
 
   test("let you pass with one", async () => {
-    const { g, term } = scriptContext({ player: newPlayer({ screen: 486, x: 3, y: 9 }, { hasPortCityPass: true }) });
+    const { g, term } = scriptContext({ player: newPlayer({ screen: 486, x: 3, y: 9, items: { "port-city-pass": 1 } }) });
     await cityGuards(g);
     expect(row(term.screen, 23)).toContain("The guards eye you as you pass.");
     expect(g.tookScreen).toBe(false);
