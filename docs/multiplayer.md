@@ -78,6 +78,16 @@ Each phase ends playable, tested and committed.
 6. **Operations.** A config file (ports, limits), logging, admin kick and
    ban, deployment notes (systemd; TLS for the web through a reverse proxy).
 
+## Status
+
+- **Phase 0: done.** `autosave`, `Game.showingMap`, `escapeMarkup`.
+- **Phase 1: done.** `bun run server` (see the README). Notes:
+  - Telnet output is UTF-8 only for now (open question 1).
+  - The server listens on 127.0.0.1 unless given `--host`.
+  - Bun 1.3's `server.stop()` promise never settles once a web socket has
+    connected (it does stop listening), so shutdown doesn't wait on it.
+  - An account's name is its player's name; a new game doesn't ask again.
+
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.

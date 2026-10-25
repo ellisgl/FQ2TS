@@ -26,6 +26,15 @@ While exploring: arrows (or 8 4 6 2) walk, **I** or **V** shows your stats and i
 
 Items are defined in `data/items.json` and monsters and encounter tables in `data/monsters.json`.
 
+## Multiplayer server
+
+```sh
+bun run server                     # telnet on port 2323, web on http://127.0.0.1:8080/
+bun server.ts --host 0.0.0.0       # let other computers connect (-h for all the options)
+```
+
+Players connect with a telnet client (`telnet localhost 2323`) or a web browser, make an account, and play; their game is saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use the web page behind HTTPS (`--no-telnet` turns telnet off). Seeing and talking to other players comes next: see [docs/multiplayer.md](docs/multiplayer.md).
+
 ## Tools
 
 New versions of the original's map tools, working on `data/maps/` directly:
@@ -67,6 +76,7 @@ Code style follows the PER Coding Style (adapted from PHP): 4-space indents, sin
 - [engine/](engine/) is the game engine: terminal, screen, text markup, world, combat, saves, and the `g` API that scripts use ([engine/script.ts](engine/script.ts)).
 - [content/](content/) is the game itself: every screen's triggers and all the scripts, written as async TypeScript functions (converted from the original REF files). [content/start.ts](content/start.ts) holds the starting player and the `Flags` type, so a misspelled flag is a compile error.
 - [data/](data/) holds the game data as JSON: `config.json` (from VARS.DAT), `items.json` (the item catalogue), `monsters.json` (monsters and encounter tables, from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT, now with screen names and terrain).
+- [server/](server/) is the multiplayer server: telnet and web connections, accounts and saves (SQLite), and each player's session. [server.ts](server.ts) starts it.
 - [tools/](tools/) holds the map tools (see Tools above).
 - [test/](test/) holds the unit tests (`bun:test`). [test/helpers.ts](test/helpers.ts) has a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, plus small worlds and players to test with. [test/content/data.test.ts](test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
 - [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (telnet and web, LORD II style).
