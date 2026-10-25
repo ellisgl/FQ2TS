@@ -6,6 +6,7 @@ import { mkdirSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import content from './content/index.ts';
 import { startServer, type RunningServer } from './server/server.ts';
+import { smtpMailer, type Mailer } from './server/mail.ts';
 
 const USAGE = `Usage: bun server.ts [options]
 
@@ -18,6 +19,12 @@ const USAGE = `Usage: bun server.ts [options]
   --data DIR            where the database goes (default: server-data)
   --max-players N       connections at once (default: 50)
   --idle-minutes N      disconnect players idle this long (default: 30)
+  --smtp-host HOST      the mail server that sends players' codes (without
+                        one, emails are written to the log instead)
+  --smtp-port N         its port (default: 587; 465 for TLS from the start)
+  --smtp-user NAME      who to log in to it as; the password comes from the
+                        FQ2_SMTP_PASSWORD environment variable
+  --mail-from ADDRESS   who the emails are from (default: the --smtp-user)
   -h, --help            show this help`;
 
 const { values } = parseArgs({
@@ -30,6 +37,10 @@ const { values } = parseArgs({
         'data': { type: 'string', default: 'server-data' },
         'max-players': { type: 'string', default: '50' },
         'idle-minutes': { type: 'string', default: '30' },
+        'smtp-host': { type: 'string' },
+        'smtp-port': { type: 'string', default: '587' },
+        'smtp-user': { type: 'string' },
+        'mail-from': { type: 'string' },
         'help': { type: 'boolean', short: 'h', default: false },
     },
 });
@@ -48,7 +59,33 @@ const number = (name: string, value: string): number => {
     return Number(value);
 };
 
+// Where players' codes are emailed from, if anywhere.
+function mailer(): Mailer | null {
+    const host = values['smtp-host'];
+    if (host === undefined) {
+        console.warn('No --smtp-host: emails (with players\' codes) will be written to the log, not sent.');
+        return null;
+    }
+
+    const user = values['smtp-user'];
+    const from = values['mail-from'] ?? user;
+    if (from === undefined) {
+        console.error('--mail-from is needed (or --smtp-user) to say who the emails are from.');
+        process.exit(1);
+    }
+
+    const password = process.env['FQ2_SMTP_PASSWORD'];
+    return smtpMailer({
+        host,
+        port: number('smtp-port', values['smtp-port']),
+        from,
+        ...(user === undefined ? {} : { user }),
+        ...(password === undefined ? {} : { password }),
+    });
+}
+
 const dataDir = resolve(values.data);
+const mail = mailer();
 mkdirSync(dataDir, { recursive: true });
 
 // Starts the server, or explains why it can't (a port someone else has,
@@ -64,6 +101,7 @@ function start(): RunningServer {
             webPort: values['no-web'] ? null : number('web-port', values['web-port']),
             maxPlayers: number('max-players', values['max-players']),
             idleMinutes: number('idle-minutes', values['idle-minutes']),
+            ...(mail ? { mailer: mail } : {}),
         });
     } catch (error) {
         const code = typeof error === 'object' && error !== null && 'code' in error ? error.code : undefined;

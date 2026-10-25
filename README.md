@@ -35,7 +35,15 @@ bun run server                     # telnet on port 2323, web on http://127.0.0.
 bun server.ts --host 0.0.0.0       # let other computers connect (-h for all the options)
 ```
 
-Players connect with a telnet client (`telnet localhost 2323`) or a web browser, make an account, and play; their game is saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use the web page behind HTTPS (`--no-telnet` turns telnet off). Seeing and talking to other players comes next: see [docs/multiplayer.md](docs/multiplayer.md).
+Players connect with a telnet client (`telnet localhost 2323`) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and a forgotten password is reset from the login menu with another code. The codes are sent through an SMTP server:
+
+```sh
+FQ2_SMTP_PASSWORD=... bun server.ts --smtp-host smtp.example.com --smtp-user game@example.com
+```
+
+Without `--smtp-host`, emails are written to the server's log instead, for trying it out.
+
+Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use the web page behind HTTPS (`--no-telnet` turns telnet off). Seeing and talking to other players comes next: see [docs/multiplayer.md](docs/multiplayer.md).
 
 ## Tools
 
