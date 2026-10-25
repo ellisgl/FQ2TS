@@ -82,7 +82,6 @@ Code style follows the PER Coding Style (adapted from PHP): 4-space indents, sin
 - [tools/](tools/) holds the map tools (see Tools above).
 - [test/](test/) holds the unit tests (`bun:test`). [test/helpers.ts](test/helpers.ts) has a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, plus small worlds and players to test with. [test/content/data.test.ts](test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
 - [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (telnet and web, LORD II style).
-- [FQ2.DOC](FQ2.DOC) is the original game manual (v0.94).
 
 ## License
 
