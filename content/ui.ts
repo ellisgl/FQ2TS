@@ -104,8 +104,10 @@ export const worldMapLegend: readonly string[] = [
     '{x 28}{y 7}{white}{on blue}and a {on green} {on blue} represents land.',
 ];
 
+// The game's title, then the player's name (or, for old saves without
+// one, the company), hitpoints and gold.
 export const statusLine = (p: Player<Flags>, { title, companyShort }: Config): string =>
-    `${title} -- By ${companyShort} -- HP (${p.hp}/${p.maxHp}) -- Gold: ${p.gold}!`;
+    `${title} -- ${p.name || `By ${companyShort}`} -- HP (${p.hp}/${p.maxHp}) -- Gold: ${p.gold}!`;
 
 // The inventory (I): the player's stats and items. Picking an item offers
 // what can be done with it.
@@ -115,7 +117,7 @@ export async function inventory(g: G): Promise<void> {
         g.cls();
         const bank = g.flags.hasBankAccount ? `   {white}Bank {yellow}$${g.flags.bankGold}` : '';
         g.print(
-            '{yellow}{center}Inventory',
+            `{yellow}{center}${g.name ? `${g.name}'s Inventory` : 'Inventory'}`,
             '',
             `{white}Experience {lightcyan}${g.exp}   {white}Hitpoints {lightred}${g.hp}/${g.maxHp}   {white}Gold {yellow}$${g.gold}${bank}`,
             `{white}Strength {lightcyan}${g.strength}   {white}Defense {lightcyan}${g.defense}`,

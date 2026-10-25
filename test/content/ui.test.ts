@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'bun:test';
 import { credits, help, inventory, statusLine, title, worldMapLegend } from '../../content/ui.ts';
-import { newGame } from '../../content/story.ts';
+import { NAME_LENGTH, newGame } from '../../content/story.ts';
 import { draw } from '../../engine/text.ts';
 import { Screen } from '../../engine/screen.ts';
-import { config, newPlayer, pick, row, screenText, scriptContext } from '../helpers.ts';
+import { config, newPlayer, pick, row, screenText, scriptContext, typed } from '../helpers.ts';
 
 function drawn(lines: readonly string[]): string {
     const screen = new Screen();
@@ -41,8 +41,27 @@ test('the world map legend', () => {
     expect(drawn(worldMapLegend)).toContain('represents a large town');
 });
 
-test('the status line', () => {
+test('the status line shows the name, or the company for old saves without one', () => {
     expect(statusLine(newPlayer({ hp: 12, gold: 3 }), config)).toBe('Final Quest 2 -- By AkoriSoft -- HP (12/250) -- Gold: 3!');
+    expect(statusLine(newPlayer({ name: 'Ellis', hp: 12, gold: 3 }), config)).toBe('Final Quest 2 -- Ellis -- HP (12/250) -- Gold: 3!');
+});
+
+test('the status line fits the longest name and big numbers', () => {
+    const line = statusLine(newPlayer({ name: 'W'.repeat(NAME_LENGTH), hp: 99999, maxHp: 99999, gold: 9999999 }), config);
+    expect(line.length).toBeLessThanOrEqual(76);
+});
+
+test('the inventory is headed with the name', async () => {
+    const { g, term } = scriptContext({
+        player: newPlayer({ name: 'Ellis' }),
+        steps: [
+            () => {
+                expect(row(term.screen, 1).trim()).toBe("Ellis's Inventory");
+                return 'escape';
+            },
+        ],
+    });
+    await inventory(g);
 });
 
 describe('inventory', () => {
@@ -144,11 +163,40 @@ describe('inventory', () => {
     });
 });
 
-test('a new game starts with a stick and a vest', async () => {
-    const { g, term } = scriptContext({ steps: ['x'] });
-    await newGame(g);
-    expect(g.weapon?.name).toBe('Stick');
-    expect(g.armour?.name).toBe('Vest');
-    expect(row(term.screen, 1)).toContain('put on your Vest, and strap your Stick to');
-    expect(term.remaining).toBe(0);
+describe('a new game', () => {
+    test('asks for a name and sex, then starts with a stick and a vest', async () => {
+        const { g, term } = scriptContext();
+        term.feed(
+            () => {
+                expect(row(term.screen, 3)).toBe('What is your name, adventurer?');
+                return 'enter';
+            },
+            ...typed('  '),
+            ...typed(' Ellis '),
+            () => {
+                expect(row(term.screen, 6)).toBe('And are you...');
+                expect(row(term.screen, 8)).toBe('A man');
+                expect(row(term.screen, 9)).toBe('A woman');
+                return 'down';
+            },
+            'enter',
+            () => {
+                expect(row(term.screen, 1)).toBe('Ellis...');
+                expect(row(term.screen, 3)).toContain('put on your Vest, and strap your Stick to');
+                return 'x';
+            },
+        );
+        await newGame(g);
+        expect([g.name, g.sex]).toEqual(['Ellis', 'female']);
+        expect(g.weapon?.name).toBe('Stick');
+        expect(g.armour?.name).toBe('Vest');
+        expect(term.remaining).toBe(0);
+    });
+
+    test('names are cut at 20 characters, and Escape means a man', async () => {
+        const { g } = scriptContext({ steps: [...typed('A'.repeat(30)), 'escape', 'x'] });
+        await newGame(g);
+        expect(g.name).toBe('A'.repeat(NAME_LENGTH));
+        expect(g.sex).toBe('male');
+    });
 });

@@ -144,7 +144,7 @@ export async function roshi(g: G): Promise<void> {
     g.cls();
     const hadPass = g.has('port-city-pass');
     if (!hadPass) {
-        g.print('{yellow}A Man Says:', "{green}Psst, hey, boy!! If you beat me, I'll give you a pass to {gray}Port City{green}!", '', ...stats());
+        g.print('{yellow}A Man Says:', `{green}Psst, hey, ${g.bySex('boy', 'girl')}!! If you beat me, I'll give you a pass to {gray}Port City{green}!`, '', ...stats());
     } else {
         g.print('{yellow}Master Roshi says:', '{green}Welcome back!! Ready for a rematch!!!!', '', ...stats());
     }
@@ -173,7 +173,7 @@ export async function roshi(g: G): Promise<void> {
     ];
     if (!hadPass) {
         g.print(
-            '{yellow}You are a great man.. YOU HAVE BESTED ME!',
+            `{yellow}You are a great ${g.bySex('man', 'woman')}.. YOU HAVE BESTED ME!`,
             '',
             ...rewards,
             '{green}AND, as promised, your {yellow}PASS {green}to Port City.  Good Luck! Come back anytime!',

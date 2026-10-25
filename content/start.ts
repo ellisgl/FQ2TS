@@ -26,6 +26,8 @@ export type G = ScriptContext<Flags>;
 export type Script = EngineScript<Flags>;
 
 export const start: Player<Flags> = {
+    name: '',
+    sex: 'male',
     screen: 721,
     x: 33,
     y: 11,
