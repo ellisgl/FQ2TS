@@ -40,6 +40,13 @@ describe('TelnetParser', () => {
         expect(parser.feed(smile.subarray(1))).toEqual({ text: '☺', size: null });
     });
 
+    test('a subnegotiation that goes on and on is cut short, and parsing carries on after it', () => {
+        const parser = new TelnetParser();
+        expect(parser.feed(bytes(IAC, SB, NAWS, 0, 90, 0, 30))).toEqual({ text: '', size: null });
+        expect(parser.feed(new Uint8Array(100_000).fill(7))).toEqual({ text: '', size: null });
+        expect(parser.feed(bytes(IAC, SE, 'ok'))).toEqual({ text: 'ok', size: { columns: 90, rows: 30 } });
+    });
+
     test('a short NAWS gives no size', () => {
         expect(new TelnetParser().feed(bytes(IAC, SB, NAWS, 0, 80, IAC, SE)).size).toBeNull();
     });

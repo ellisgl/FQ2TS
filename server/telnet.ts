@@ -13,6 +13,9 @@ const SE = 240;
 const ECHO = 1;
 const SUPPRESS_GO_AHEAD = 3;
 const NAWS = 31;
+// The most of a subnegotiation kept (the window size needs 5 bytes); a
+// client could otherwise send one that never ends.
+const MAX_SUBNEGOTIATION = 64;
 
 // What the server says when a player connects: "I'll echo", "no go-aheads",
 // and "please tell me your window size".
@@ -69,7 +72,7 @@ export class TelnetParser {
                     if (byte === IAC) {
                         this.state = 'subnegotiation-command';
                     } else {
-                        this.subnegotiation.push(byte);
+                        this.keep(byte);
                     }
                     break;
                 case 'subnegotiation-command':
@@ -78,7 +81,7 @@ export class TelnetParser {
                         this.state = 'data';
                     } else {
                         // A doubled IAC inside a subnegotiation.
-                        this.subnegotiation.push(byte);
+                        this.keep(byte);
                         this.state = 'subnegotiation';
                     }
                     break;
@@ -86,6 +89,12 @@ export class TelnetParser {
         }
 
         return { text: this.decoder.decode(new Uint8Array(data), { stream: true }), size };
+    }
+
+    private keep(byte: number): void {
+        if (this.subnegotiation.length < MAX_SUBNEGOTIATION) {
+            this.subnegotiation.push(byte);
+        }
     }
 }
 
