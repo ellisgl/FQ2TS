@@ -3,22 +3,22 @@
 A tour of the code for anyone who wants to understand it or change it: what
 the parts are, how they fit, and what happens, step by step, when a player
 presses a key. It assumes you can read TypeScript; it doesn't assume you've
-written a game before. (To make a game, see [making-a-game.md](making-a-game.md);
+written a game before. (To make a game, see [making-a-game.md](https://github.com/ellisgl/hello-quest/blob/main/docs/making-a-game.md);
 to write a mod, [mods.md](mods.md).)
 
 ## The parts
 
 ```
- games/fq2 (Final Quest 2)          games/hello (Hello Quest)
+ FQ2TS (this repo)                  hello-quest
    content/  data/  fq2.ts            content.ts  data/  hello.ts
    server.ts  tools/                  tools/
         │                                  │
         ▼                                  ▼
- packages/engine ◄──── packages/server  (multiplayer: SSH, web)
-   the game itself  ◄── packages/tools  (map viewer, editor, generator)
+ fq2ts-engine ◄──── fq2ts-server  (multiplayer: SSH, web)
+   the game itself ◄── fq2ts-tools  (map viewer, editor, generator)
 ```
 
-- **The engine** ([packages/engine/src](../packages/engine/src)) is
+- **The engine** ([fq2ts-engine](https://github.com/ellisgl/fq2ts-engine/tree/main/src)) is
   everything a game of this kind needs: a screen of coloured characters, a
   keyboard, a world of screens, a player, scripts, fights, items, saves. It
   knows nothing about Final Quest 2.
@@ -37,21 +37,21 @@ Roughly from the bottom up:
 
 | File | What it is |
 |---|---|
-| [validate.ts](../packages/engine/src/validate.ts), [assert.ts](../packages/engine/src/assert.ts) | Checking data read from files (`record`, `field`, `integer`...), and lookups that can only fail through a bug (`at`). |
-| [chars.ts](../packages/engine/src/chars.ts) | What fits in one screen cell: one character one column wide. Everything shown goes through it, so nothing a player types can break the screen. |
-| [screen.ts](../packages/engine/src/screen.ts) | The 80x25 grid of cells, and turning it into terminal output. |
-| [terminal.ts](../packages/engine/src/terminal.ts) | The keyboard and the real terminal: raw input becomes key names; the screen is sent out. |
-| [text.ts](../packages/engine/src/text.ts) | The text markup (`{yellow}`, `{x 10}`, `{center}`...) drawn onto the screen. |
-| [ui.ts](../packages/engine/src/ui.ts) | Building blocks: menus (`choose`), text boxes, the status bar, scrolling text. |
-| [world.ts](../packages/engine/src/world.ts) | The map: screens on a grid, each 79x22 cells, read from JSON files. |
-| [player.ts](../packages/engine/src/player.ts), [items.ts](../packages/engine/src/items.ts) | The player's state (what's saved), and the item catalogue. |
-| [combat.ts](../packages/engine/src/combat.ts) | Monsters, encounter tables, and the fight screen. |
-| [shared.ts](../packages/engine/src/shared.ts) | The world's state (`g.world`): what belongs to everyone, not one player. |
-| [script.ts](../packages/engine/src/script.ts) | `ScriptContext`, the `g` every script gets: the whole API for content. |
-| [game.ts](../packages/engine/src/game.ts) | `Game`: the title menu, walking about, running triggers, messages, saving. The heart of it. |
-| [saves.ts](../packages/engine/src/saves.ts), [files.ts](../packages/engine/src/files.ts) | Save slots, written safely. |
-| [data.ts](../packages/engine/src/data.ts), [mods.ts](../packages/engine/src/mods.ts) | Reading a game's data folder, and adding mods to it. |
-| [testing.ts](../packages/engine/src/testing.ts), [fixture.ts](../packages/engine/src/fixture.ts) | A pretend terminal for tests, and Test Quest, a tiny game to test with. |
+| [validate.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/validate.ts), [assert.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/assert.ts) | Checking data read from files (`record`, `field`, `integer`...), and lookups that can only fail through a bug (`at`). |
+| [chars.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/chars.ts) | What fits in one screen cell: one character one column wide. Everything shown goes through it, so nothing a player types can break the screen. |
+| [screen.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/screen.ts) | The 80x25 grid of cells, and turning it into terminal output. |
+| [terminal.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/terminal.ts) | The keyboard and the real terminal: raw input becomes key names; the screen is sent out. |
+| [text.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/text.ts) | The text markup (`{yellow}`, `{x 10}`, `{center}`...) drawn onto the screen. |
+| [ui.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/ui.ts) | Building blocks: menus (`choose`), text boxes, the status bar, scrolling text. |
+| [world.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/world.ts) | The map: screens on a grid, each 79x22 cells, read from JSON files. |
+| [player.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/player.ts), [items.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/items.ts) | The player's state (what's saved), and the item catalogue. |
+| [combat.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/combat.ts) | Monsters, encounter tables, and the fight screen. |
+| [shared.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/shared.ts) | The world's state (`g.world`): what belongs to everyone, not one player. |
+| [script.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/script.ts) | `ScriptContext`, the `g` every script gets: the whole API for content. |
+| [game.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/game.ts) | `Game`: the title menu, walking about, running triggers, messages, saving. The heart of it. |
+| [saves.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/saves.ts), [files.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/files.ts) | Save slots, written safely. |
+| [data.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/data.ts), [mods.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/mods.ts) | Reading a game's data folder, and adding mods to it. |
+| [testing.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/testing.ts), [fixture.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/fixture.ts) | A pretend terminal for tests, and Test Quest, a tiny game to test with. |
 
 ## The screen and the terminal
 
@@ -130,7 +130,7 @@ never has to think about the terminal, the network or other players.
 ## Content and scripts
 
 A game gives the engine a `Content` object
-([games/fq2/content/index.ts](../games/fq2/content/index.ts)): its title
+([content/index.ts](../content/index.ts)): its title
 screen, help, status line, the start player, its opening, its inventory
 screen, and, most of all, `screens`: for each screen, the scripts that run
 when the player steps on a tile (`at`) and when it's drawn (`show`).
@@ -165,7 +165,7 @@ just more content.
 
 ## The server
 
-[packages/server/src](../packages/server/src) runs one game for everyone, in
+[fq2ts-server](https://github.com/ellisgl/fq2ts-server/tree/main/src) runs one game for everyone, in
 one process:
 
 ```
@@ -174,34 +174,34 @@ one process:
  web ────┘   (RemoteIO)    Session   └─► Game (Cat)   ─┘   Store: SQLite
 ```
 
-- **A connection** ([server.ts](../packages/server/src/server.ts)) is one
-  player's socket: SSH ([ssh.ts](../packages/server/src/ssh.ts)) or a web
-  socket from the page ([client.html](../packages/server/src/client.html),
+- **A connection** ([server.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/server.ts)) is one
+  player's socket: SSH ([ssh.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/ssh.ts)) or a web
+  socket from the page ([client.html](https://github.com/ellisgl/fq2ts-server/blob/main/src/client.html),
   using xterm.js). Each gets a `RemoteIO`, which pretends to be a keyboard
   and a terminal, and a `Terminal` on top, so the game runs exactly as it
   does on your own screen.
-- **The guard** ([guard.ts](../packages/server/src/guard.ts)) checks each
+- **The guard** ([guard.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/guard.ts)) checks each
   connection as it opens: banned addresses, too many connections, and later
   too many wrong passwords or emails.
-- **A session** ([session.ts](../packages/server/src/session.ts)) is the
+- **A session** ([session.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/session.ts)) is the
   front door: log in, sign up (with an email address, confirmed with a
   code), reset a password. Then it makes the player's `Game` and plays it.
-- **The realm** ([realm.ts](../packages/server/src/realm.ts)) knows who is
+- **The realm** ([realm.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/realm.ts)) knows who is
   playing and where, and passes things between their games: other players
   to draw, things said, arrivals.
-- **The store** ([store.ts](../packages/server/src/store.ts)) is the SQLite
+- **The store** ([store.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/store.ts)) is the SQLite
   database: accounts, players, letters, news, bans. Its layout grows a step
-  at a time ([migrations.ts](../packages/server/src/migrations.ts)), and an
+  at a time ([migrations.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/migrations.ts)), and an
   older database is brought up to date when the server starts.
 - **The extra keys** each have a file: talking and mail
-  ([talk.ts](../packages/server/src/talk.ts)), fights between players
-  ([pvp.ts](../packages/server/src/pvp.ts)), gifts
-  ([gifts.ts](../packages/server/src/gifts.ts)), bounties
-  ([bounty.ts](../packages/server/src/bounty.ts)), lists
-  ([lists.ts](../packages/server/src/lists.ts)), the admin menu
-  ([admin.ts](../packages/server/src/admin.ts)).
-- **Days** ([days.ts](../packages/server/src/days.ts)) turn at midnight;
-  **the world's state** ([world-state.ts](../packages/server/src/world-state.ts))
+  ([talk.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/talk.ts)), fights between players
+  ([pvp.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/pvp.ts)), gifts
+  ([gifts.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/gifts.ts)), bounties
+  ([bounty.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/bounty.ts)), lists
+  ([lists.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/lists.ts)), the admin menu
+  ([admin.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/admin.ts)).
+- **Days** ([days.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/days.ts)) turn at midnight;
+  **the world's state** ([world-state.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/world-state.ts))
   is kept in the database and shared by every game.
 
 ### One process, many players, no locks
@@ -244,11 +244,11 @@ level up:
   of steps (keys, or functions that look at the screen and return the next
   key), so a test can play a game from the title screen to the end and
   check what was on the screen at each moment. The engine tests play Test
-  Quest ([fixture.ts](../packages/engine/src/fixture.ts)); FQ2's tests play
+  Quest ([fixture.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/fixture.ts)); FQ2's tests play
   Final Quest 2.
 - **The real server**: the server tests start a server and connect to it
   over SSH and web sockets, as players would. A model of each
-  client's screen ([screen-model.ts](../packages/server/test/screen-model.ts))
+  client's screen ([screen-model.ts](https://github.com/ellisgl/fq2ts-server/blob/main/test/screen-model.ts))
   follows what the server sends, so a test can wait until "Bob says: hello"
   is on Ann's screen.
 
@@ -268,14 +268,14 @@ pass before a change goes in.
 
 ## Where to start reading
 
-1. [games/hello/content.ts](../games/hello/content.ts): a whole game in one
+1. [games/hello/content.ts](https://github.com/ellisgl/hello-quest/blob/main/content.ts): a whole game in one
    file.
-2. [script.ts](../packages/engine/src/script.ts): everything content can
+2. [script.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/script.ts): everything content can
    do.
-3. [game.ts](../packages/engine/src/game.ts), from `play()`: the loop
+3. [game.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/game.ts), from `play()`: the loop
    described above.
-4. [screen.ts](../packages/engine/src/screen.ts) and
-   [terminal.ts](../packages/engine/src/terminal.ts): drawing and keys.
-5. For the server: [server.ts](../packages/server/src/server.ts)'s
-   `startServer`, then [session.ts](../packages/server/src/session.ts)
-   and [realm.ts](../packages/server/src/realm.ts).
+4. [screen.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/screen.ts) and
+   [terminal.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/terminal.ts): drawing and keys.
+5. For the server: [server.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/server.ts)'s
+   `startServer`, then [session.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/session.ts)
+   and [realm.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/realm.ts).

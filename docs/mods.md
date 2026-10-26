@@ -88,7 +88,7 @@ export default {
   another version isn't loaded. It's 1 today.
 - **Scripts** are called with `g`, everything the game's own scripts get
   (see `ScriptContext` in
-  [packages/engine/src/script.ts](../packages/engine/src/script.ts)), and
+  [packages/engine/src/script.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/script.ts)), and
   `mod`, which holds the mod's flags. Scripts can be `async`.
 - **`world`** is the mod's own world state, as `flags` are its own
   flags: what belongs to the world rather than a player (shared by
@@ -133,6 +133,6 @@ on one of its screens starts again at the start screen.
 ## Testing a mod
 
 A mod is a plain object, so it can be tested like the game's scripts. See
-[games/fq2/test/mods.test.ts](../games/fq2/test/mods.test.ts): it adds the
+[test/mods.test.ts](../test/mods.test.ts): it adds the
 wishing well to Final Quest 2 with `loadMod` and `applyMods`, and plays it
 on a scripted terminal.

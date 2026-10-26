@@ -10,7 +10,7 @@ import content from '../content/index.ts';
 import type { Flags, Shared } from '../content/start.ts';
 import { bestiary, config, gameWorld, itemCatalogue, newPlayer, pick, screenText } from './helpers.ts';
 
-const MODS = join(import.meta.dir, '..', '..', '..', 'mods');
+const MODS = join(import.meta.dir, '..', 'mods');
 const fq2 = (): ModdableGame<Flags, Shared> => ({ content, world: gameWorld(), items: itemCatalogue, monsters: bestiary });
 
 let random: Mock<() => number> | null = null;

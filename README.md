@@ -15,9 +15,9 @@ The rewrite, in a terminal:
 You need [Bun](https://bun.sh/) and a terminal of at least 80x25:
 
 ```sh
-bun install            # dev tools only (TypeScript, ESLint); not needed just to play
-bun start              # or: bun games/fq2/fq2.ts
-bun run debug          # or: bun games/fq2/fq2.ts --debug   (position display, S = settings editor)
+bun install            # the engine, server and tools (from GitHub), and the dev tools
+bun start              # or: bun fq2.ts
+bun run debug          # or: bun fq2.ts --debug   (position display, S = settings editor)
 ```
 
 Saved games go to `saves/` as JSON. The game draws in true colour, 256 colours or 16, depending on what the terminal says it supports (`COLORTERM` and `TERM`). Set `FQ2_COLORS` to `true`, `256` or `16` to choose for yourself.
@@ -26,7 +26,7 @@ While exploring: arrows (or 8 4 6 2) walk, **I** or **V** shows your stats and i
 
 Text and maps are Unicode (UTF-8): a map cell can hold any character one column wide (letters with accents, Greek, Cyrillic, box drawing, blocks, symbols...), but not wide ones like emoji or CJK, which would put the screen out of line. Anything that doesn't fit a cell is shown as `?`.
 
-Items are defined in `games/fq2/data/items.json` and monsters and encounter tables in `games/fq2/data/monsters.json`.
+Items are defined in `data/items.json` and monsters and encounter tables in `data/monsters.json`.
 
 ## Multiplayer server
 
@@ -55,7 +55,7 @@ Mods add screens, items, monsters and scripts to the game without changing it. E
 
 ## Tools
 
-New versions of the original's map tools, working on `games/fq2/data/maps/` directly:
+New versions of the original's map tools, working on `data/maps/` directly:
 
 ```sh
 bun run edit                       # the level editor (in the terminal; press ? for its keys)
@@ -90,25 +90,26 @@ bun test               # just the tests
 bun run coverage       # tests with a coverage report
 ```
 
-Code style follows the PER Coding Style (adapted from PHP): 4-space indents, single quotes, braces on every block, explicit `public`/`private`, no trailing whitespace. ESLint enforces it (`bunx eslint --fix .` fixes most of it). The code avoids `any`, `as` casts and `!` assertions. Lookups that can only miss because of a bug go through `at()`/`cellAt()` in [assert.ts](packages/engine/src/assert.ts), which throw. JSON files and saved games are checked when they're loaded ([validate.ts](packages/engine/src/validate.ts)), so a bad file fails with the path to the bad value, e.g. `monsters.json.monsters[1].hp: expected a whole number`.
+Code style follows the PER Coding Style (adapted from PHP): 4-space indents, single quotes, braces on every block, explicit `public`/`private`, no trailing whitespace. ESLint enforces it (`bunx eslint --fix .` fixes most of it). The code avoids `any`, `as` casts and `!` assertions. Lookups that can only miss because of a bug go through `at()`/`cellAt()` in [assert.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/assert.ts), which throw. JSON files and saved games are checked when they're loaded ([validate.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/validate.ts)), so a bad file fails with the path to the bad value, e.g. `monsters.json.monsters[1].hp: expected a whole number`.
 
 ## Layout
 
-The repository is a Bun workspace: an engine and its multiplayer server and map tools as packages that other games could use, and Final Quest 2 as a game built on them.
+This repository is Final Quest 2, a game built on packages that other games can use, each in its own repository and installed from GitHub (`package.json` pins each to a tag):
 
-- [packages/engine/](packages/engine/) (`@fq2ts/engine`) is the game engine: terminal, screen, text markup, world, combat, items, saves, and the `g` API that scripts use ([script.ts](packages/engine/src/script.ts)). [testing.ts](packages/engine/src/testing.ts) is a kit for testing games: a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, and small maps, worlds and monsters.
-- [packages/server/](packages/server/) (`@fq2ts/server`) is the multiplayer server: SSH and web connections, accounts with email addresses, saves (SQLite, with [migrations](packages/server/src/migrations.ts)), and each player's session. [cli.ts](packages/server/src/cli.ts) is its command line, which a game runs with its content.
-- [packages/tools/](packages/tools/) (`@fq2ts/tools`) holds the map tools (see Tools above); a game gives them its map folder and trigger tiles.
-- [games/hello/](games/hello/) is Hello Quest (`bun run hello`), the smallest whole game on the engine: three screens, a sign, a hermit and some monsters. [docs/making-a-game.md](docs/making-a-game.md) builds it step by step, as a guide to making your own.
-- [games/fq2/](games/fq2/) is Final Quest 2:
-  - [fq2.ts](games/fq2/fq2.ts) is the single-player entry point, [server.ts](games/fq2/server.ts) the multiplayer one, and [tools/](games/fq2/tools/) runs the map tools on its maps.
-  - [content/](games/fq2/content/) is the game itself: every screen's triggers and all the scripts, written as async TypeScript functions (converted from the original REF files). [content/start.ts](games/fq2/content/start.ts) holds the starting player and the `Flags` type, so a misspelled flag is a compile error.
-  - [data/](games/fq2/data/) holds the game data as JSON: `config.json` (from VARS.DAT), `items.json` (the item catalogue), `monsters.json` (monsters and encounter tables, from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT, now with screen names and terrain).
-- Tests (`bun:test`) sit in each package's `test/` folder. The packages test themselves on Test Quest ([fixture.ts](packages/engine/src/fixture.ts)), a tiny game of four screens and a few triggers, with its data in [fixture/](packages/engine/src/fixture/), so they don't need Final Quest 2. FQ2's own tests are in [games/fq2/test/](games/fq2/test/): its scripts, data and maps, with its fixtures in [helpers.ts](games/fq2/test/helpers.ts). [content/data.test.ts](games/fq2/test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
-- [mods/](mods/) holds the mods to add to the game, and [docs/mods.md](docs/mods.md) is the guide to writing them ([mods.ts](packages/engine/src/mods.ts) is the loader).
+- [fq2ts-engine](https://github.com/ellisgl/fq2ts-engine) (`@fq2ts/engine`) is the game engine: terminal, screen, text markup, world, combat, items, saves, and the `g` API that scripts use ([script.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/script.ts)). [testing.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/testing.ts) is a kit for testing games: a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, and small maps, worlds and monsters.
+- [fq2ts-server](https://github.com/ellisgl/fq2ts-server) (`@fq2ts/server`) is the multiplayer server: SSH and web connections, accounts with email addresses, saves (SQLite, with [migrations](https://github.com/ellisgl/fq2ts-server/blob/main/src/migrations.ts)), and each player's session. [cli.ts](https://github.com/ellisgl/fq2ts-server/blob/main/src/cli.ts) is its command line, which a game runs with its content.
+- [fq2ts-tools](https://github.com/ellisgl/fq2ts-tools) (`@fq2ts/tools`) holds the map tools (see Tools above); a game gives them its map folder and trigger tiles.
+- [hello-quest](https://github.com/ellisgl/hello-quest) is Hello Quest, the smallest whole game on the engine: three screens, a sign, a hermit and some monsters. [docs/making-a-game.md](https://github.com/ellisgl/hello-quest/blob/main/docs/making-a-game.md) builds it step by step, as a guide to making your own.
+And in this one:
+
+- [fq2.ts](fq2.ts) is the single-player entry point, [server.ts](server.ts) the multiplayer one, and [tools/](tools/) runs the map tools on its maps.
+- [content/](content/) is the game itself: every screen's triggers and all the scripts, written as async TypeScript functions (converted from the original REF files). [content/start.ts](content/start.ts) holds the starting player and the `Flags` type, so a misspelled flag is a compile error.
+- [data/](data/) holds the game data as JSON: `config.json` (from VARS.DAT), `items.json` (the item catalogue), `monsters.json` (monsters and encounter tables, from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT, now with screen names and terrain).
+- Tests (`bun:test`) sit in each repository's `test/` folder. The packages test themselves on Test Quest ([fixture.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/fixture.ts)), a tiny game of four screens and a few triggers, with its data in [fixture/](https://github.com/ellisgl/fq2ts-engine/tree/main/src/fixture), so they don't need Final Quest 2. FQ2's own tests are in [test/](test/): its scripts, data and maps, with its fixtures in [helpers.ts](test/helpers.ts). [content/data.test.ts](test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
+- [mods/](mods/) holds the mods to add to the game, and [docs/mods.md](docs/mods.md) is the guide to writing them ([mods.ts](https://github.com/ellisgl/fq2ts-engine/blob/main/src/mods.ts) is the loader).
 - [docs/architecture.md](docs/architecture.md) is a tour of how it all works: the parts, the life of a keypress, the server, and where to start reading.
 - [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (SSH and web, LORD II style).
-- [patches/](patches/) patches ssh2 not to load its native add-ons (Bun crashes loading them).
+- [patches/](patches/) patches ssh2 (here and in fq2ts-server: Bun only applies the top project's patches) not to load its native add-ons (Bun crashes loading them).
 
 ## License
 
