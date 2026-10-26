@@ -49,6 +49,11 @@ FQ2_MAIL_FROM=Final Quest 2 <game@example.com>
 Turn off what you don't want (`FQ2_NO_TELNET=true`: telnet sends passwords
 unencrypted). `bun run server -h` lists every setting.
 
+The game rules can be changed the same way: how many fights between
+players a day (`FQ2_FIGHTS_PER_DAY`), what the winner takes, how often
+players can talk, how many letters they can send and keep, and how long
+the news lasts. `.env.example` lists them with their defaults.
+
 The database and the SSH host key go in `server-data/` (`FQ2_DATA`). Keep
 `ssh_host_ed25519_key`: if it's lost, a new one is made, and players' SSH
 clients will warn that the server has changed.
