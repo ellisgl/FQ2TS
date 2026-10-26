@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, spyOn, test } from 'bun:test';
 import { bar, castle, castleOwners, cityGuards, hotelGuard, hotelRunner, oldWoman } from '../../content/scripts/places.ts';
-import { MemoryWorld } from '@fq2js/engine/shared';
+import { MemoryWorld } from '@fq2ts/engine/shared';
 import { newPlayer, pick, row, screenText, scriptContext } from '../helpers.ts';
 
 const mocks: { mockRestore(): void }[] = [];

@@ -2,8 +2,8 @@
 
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { readBestiary } from '@fq2js/engine/combat';
-import { contentTriggers, type GameFiles } from '@fq2js/tools/game';
+import { readBestiary } from '@fq2ts/engine/combat';
+import { contentTriggers, type GameFiles } from '@fq2ts/tools/game';
 import content from '../content/index.ts';
 
 const DATA = join(import.meta.dir, '..', 'data');

@@ -1,8 +1,8 @@
 // The player at the start of a new game, and the flags the scripts keep
 // about what they've done.
 
-import type { Player } from '@fq2js/engine/player';
-import type { Script as EngineScript, ScriptContext } from '@fq2js/engine/script';
+import type { Player } from '@fq2ts/engine/player';
+import type { Script as EngineScript, ScriptContext } from '@fq2ts/engine/script';
 import { wyrmMaxHp } from './scripts/realm.ts';
 
 // (A type alias, not an interface, so that it fits the engine's FlagRecord.)

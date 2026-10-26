@@ -3,9 +3,9 @@
 import { expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { renderHtml } from '@fq2js/tools/html';
-import { contentTriggers } from '@fq2js/tools/game';
-import { PAGES } from '@fq2js/tools/editor/picker';
+import { renderHtml } from '@fq2ts/tools/html';
+import { contentTriggers } from '@fq2ts/tools/game';
+import { PAGES } from '@fq2ts/tools/editor/picker';
 import { main } from '../tools/view.ts';
 import content from '../content/index.ts';
 import { gameWorld, tempDir } from './helpers.ts';

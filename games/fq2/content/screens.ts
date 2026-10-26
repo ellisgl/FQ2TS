@@ -7,7 +7,7 @@
 // A trigger on a walkable tile lets the player step onto it unless the
 // script moves them, travels or takes over the screen.
 
-import type { Content, Coord } from '@fq2js/engine/game';
+import type { Content, Coord } from '@fq2ts/engine/game';
 import type { Flags, Script, Shared } from './start.ts';
 import { berries, bank, travelOffice, roshi, healer } from './scripts/town.ts';
 import { armourShop, weaponShop } from './scripts/shops.ts';

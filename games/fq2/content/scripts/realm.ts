@@ -7,8 +7,8 @@
 // the hall; three days later it's back, stronger. (In single-player, the
 // world is the player's own, and so is the Wyrm.)
 
-import type { Monster } from '@fq2js/engine/combat';
-import { escapeMarkup } from '@fq2js/engine/text';
+import type { Monster } from '@fq2ts/engine/combat';
+import { escapeMarkup } from '@fq2ts/engine/text';
 import type { G } from '../start.ts';
 
 const CONTINUE = '{lightgreen}<{green}Continue{lightgreen}>';

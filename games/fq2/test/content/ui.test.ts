@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'bun:test';
 import { credits, help, inventory, statusLine, title, worldMapLegend } from '../../content/ui.ts';
 import { NAME_LENGTH, newGame } from '../../content/story.ts';
-import { draw } from '@fq2js/engine/text';
-import { Screen } from '@fq2js/engine/screen';
+import { draw } from '@fq2ts/engine/text';
+import { Screen } from '@fq2ts/engine/screen';
 import { config, newPlayer, pick, row, screenText, scriptContext, typed } from '../helpers.ts';
 
 function drawn(lines: readonly string[]): string {

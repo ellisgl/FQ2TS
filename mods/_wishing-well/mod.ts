@@ -6,7 +6,7 @@
 // The folder's name starts with _, so it's switched off: rename it to
 // wishing-well to play with it.
 
-import type { Mod } from '@fq2js/engine/mods';
+import type { Mod } from '@fq2ts/engine/mods';
 
 export default {
     id: 'wishing-well',

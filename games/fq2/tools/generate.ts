@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // The map generator, for Final Quest 2's maps:  bun run generate [options]  (-h for them)
 
-import { main as generate } from '@fq2js/tools/generate';
+import { main as generate } from '@fq2ts/tools/generate';
 import { fq2 } from './files.ts';
 
 export const main = (args: readonly string[], log: (line: string) => void = console.log): number => generate(args, fq2, log);

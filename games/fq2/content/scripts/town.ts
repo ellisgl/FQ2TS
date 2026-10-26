@@ -1,6 +1,6 @@
 // Town services: berries, banks, travel offices, Master Roshi and the healer.
 
-import type { ItemDef } from '@fq2js/engine/items';
+import type { ItemDef } from '@fq2ts/engine/items';
 import type { G, Script } from '../start.ts';
 
 const CONTINUE = '{lightgreen}<{green}Continue{lightgreen}>';

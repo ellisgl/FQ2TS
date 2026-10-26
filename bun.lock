@@ -5,7 +5,7 @@
     "": {
       "name": "final-quest-2",
       "devDependencies": {
-        "@fq2js/engine": "workspace:*",
+        "@fq2ts/engine": "workspace:*",
         "@stylistic/eslint-plugin": "^2.9.0",
         "@types/bun": "^1.4.4",
         "@types/nodemailer": "^8.0.2",
@@ -19,37 +19,37 @@
       "name": "final-quest-2",
       "version": "0.94.4",
       "dependencies": {
-        "@fq2js/engine": "workspace:*",
-        "@fq2js/server": "workspace:*",
-        "@fq2js/tools": "workspace:*",
+        "@fq2ts/engine": "workspace:*",
+        "@fq2ts/server": "workspace:*",
+        "@fq2ts/tools": "workspace:*",
       },
     },
     "games/hello": {
       "name": "hello-quest",
       "version": "1.0.0",
       "dependencies": {
-        "@fq2js/engine": "workspace:*",
-        "@fq2js/tools": "workspace:*",
+        "@fq2ts/engine": "workspace:*",
+        "@fq2ts/tools": "workspace:*",
       },
     },
     "packages/engine": {
-      "name": "@fq2js/engine",
+      "name": "@fq2ts/engine",
       "version": "0.1.0",
     },
     "packages/server": {
-      "name": "@fq2js/server",
+      "name": "@fq2ts/server",
       "version": "0.1.0",
       "dependencies": {
-        "@fq2js/engine": "workspace:*",
+        "@fq2ts/engine": "workspace:*",
         "nodemailer": "^8.0.11",
         "ssh2": "1.17.0",
       },
     },
     "packages/tools": {
-      "name": "@fq2js/tools",
+      "name": "@fq2ts/tools",
       "version": "0.1.0",
       "dependencies": {
-        "@fq2js/engine": "workspace:*",
+        "@fq2ts/engine": "workspace:*",
       },
     },
   },
@@ -75,11 +75,11 @@
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.7.3", "", { "dependencies": { "@eslint/core": "^1.2.1", "levn": "^0.4.1" } }, "sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q=="],
 
-    "@fq2js/engine": ["@fq2js/engine@workspace:packages/engine"],
+    "@fq2ts/engine": ["@fq2ts/engine@workspace:packages/engine"],
 
-    "@fq2js/server": ["@fq2js/server@workspace:packages/server"],
+    "@fq2ts/server": ["@fq2ts/server@workspace:packages/server"],
 
-    "@fq2js/tools": ["@fq2js/tools@workspace:packages/tools"],
+    "@fq2ts/tools": ["@fq2ts/tools@workspace:packages/tools"],
 
     "@humanfs/core": ["@humanfs/core@0.19.2", "", { "dependencies": { "@humanfs/types": "^0.15.0" } }, "sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA=="],
 

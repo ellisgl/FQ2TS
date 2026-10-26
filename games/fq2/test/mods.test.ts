@@ -4,8 +4,8 @@
 import { afterEach, expect, spyOn, test, type Mock } from 'bun:test';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { applyMods, loadMod, type ModdableGame } from '@fq2js/engine/mods';
-import { makeGameWith } from '@fq2js/engine/fixture';
+import { applyMods, loadMod, type ModdableGame } from '@fq2ts/engine/mods';
+import { makeGameWith } from '@fq2ts/engine/fixture';
 import content from '../content/index.ts';
 import type { Flags, Shared } from '../content/start.ts';
 import { bestiary, config, gameWorld, itemCatalogue, newPlayer, pick, screenText } from './helpers.ts';
