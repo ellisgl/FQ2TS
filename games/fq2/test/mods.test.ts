@@ -7,11 +7,11 @@ import { join } from 'node:path';
 import { applyMods, loadMod, type ModdableGame } from '@fq2js/engine/mods';
 import { makeGameWith } from '@fq2js/engine/fixture';
 import content from '../content/index.ts';
-import type { Flags } from '../content/start.ts';
+import type { Flags, Shared } from '../content/start.ts';
 import { bestiary, config, gameWorld, itemCatalogue, newPlayer, pick, screenText } from './helpers.ts';
 
 const MODS = join(import.meta.dir, '..', '..', '..', 'mods');
-const fq2 = (): ModdableGame<Flags> => ({ content, world: gameWorld(), items: itemCatalogue, monsters: bestiary });
+const fq2 = (): ModdableGame<Flags, Shared> => ({ content, world: gameWorld(), items: itemCatalogue, monsters: bestiary });
 
 let random: Mock<() => number> | null = null;
 afterEach(() => {

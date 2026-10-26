@@ -4,9 +4,9 @@ import type { Content } from '@fq2js/engine/game';
 import { title, help, credits, worldMapLegend, statusLine, inventory } from './ui.ts';
 import { newGame } from './story.ts';
 import { screens } from './screens.ts';
-import { start, upgradeSave, type Flags } from './start.ts';
+import { shared, start, upgradeSave, type Flags, type Shared } from './start.ts';
 import { events } from './events.ts';
 
-const content: Content<Flags> = { title, help, credits, worldMapLegend, statusLine, inventory, newGame, start, screens, events, upgradeSave };
+const content: Content<Flags, Shared> = { title, help, credits, worldMapLegend, statusLine, inventory, newGame, start, world: shared, screens, events, upgradeSave };
 
 export default content;

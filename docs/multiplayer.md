@@ -135,6 +135,16 @@ Each phase ends playable, tested and committed.
     `g.ask` is `g.input` that Escape cancels. A message with more waiting
     behind it shows for 1.5 seconds instead of 4.
 
+- **Phase 4: done.** The world's state: content declares it beside the
+  flags (`Content<Flags, World>`, `world: {...}`), and scripts use it as
+  `g.world`, typed. On the server everyone shares one world, kept in the
+  database (step 5); a change redraws everyone. In single-player it's
+  saved with the game. Values are like flags, or lists of strings.
+  `g.news(text)` puts a line in the daily news. Mods get `mod.world`.
+  - Final Quest 2: anyone can buy the castle, and the world keeps the list
+    of everyone who has (`castleOwners`); the guard names them. The barn
+    gold and the minigun stay each player's own.
+
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.
@@ -147,8 +157,9 @@ Each phase ends playable, tested and committed.
 1. ~~**Telnet character set.**~~ Decided: UTF-8 only. The game uses
    Unicode throughout (any character one column wide), not CP437, so
    CP437-only BBS clients aren't supported.
-2. **Which flags become world-wide.** The castle owner, clearly; the barn
-   gold and the minigun are open.
+2. ~~**Which flags become world-wide.**~~ Decided: everyone can buy the
+   castle, and the world keeps the list of who has. The barn gold and the
+   minigun stay each player's.
 3. **PvP rules.** What the loser loses, and whether offline players can be
    attacked (LORD I: yes; LORD II: no).
 4. ~~**Telnet sends passwords in the clear.**~~ Decided: SSH (any user

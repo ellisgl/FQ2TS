@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, spyOn, test } from 'bun:test';
-import { bar, castle, cityGuards, hotelGuard, hotelRunner, oldWoman } from '../../content/scripts/places.ts';
+import { bar, castle, castleOwners, cityGuards, hotelGuard, hotelRunner, oldWoman } from '../../content/scripts/places.ts';
+import { MemoryWorld } from '@fq2js/engine/shared';
 import { newPlayer, pick, row, screenText, scriptContext } from '../helpers.ts';
 
 const mocks: { mockRestore(): void }[] = [];
@@ -90,6 +91,46 @@ describe('the castle', () => {
             await castle(g);
             expect(g.destination).toBeNull();
         }
+    });
+
+    test('anyone can buy it; the world keeps who has, and the guard names them', async () => {
+        const store = new MemoryWorld();
+        const buy = async (name: string): Promise<string> => {
+            let offer = '';
+            const { g, term } = scriptContext({
+                worldStore: store,
+                player: newPlayer({ name, gold: 10_000 }),
+                steps: [
+                    () => {
+                        offer = `${row(term.screen, 1)} ${row(term.screen, 2)}`;
+                        return 'enter';
+                    },
+                    ...pick(0),
+                    'x',
+                ],
+            });
+            await castle(g);
+            expect(g.flags.ownsCastle).toBe(true);
+            return offer;
+        };
+        expect(await buy('Ann')).toContain('The owner of this castle wishes to sell.');
+        expect(await buy('Bob')).toContain('will sell you a share." Its owners so far: Ann.');
+        expect(await buy('Cat')).toContain('Its owners so far: Ann, Bob.');
+        expect(store.get('castleOwners')).toEqual(['Ann', 'Bob', 'Cat']);
+    });
+
+    test('an owner from before the list is put on it when they go in', async () => {
+        const store = new MemoryWorld();
+        const { g } = scriptContext({ worldStore: store, player: newPlayer({ name: 'Old' }, { ownsCastle: true }) });
+        await castle(g);
+        await castle(g);
+        expect(g.world.castleOwners).toEqual(['Old']);
+    });
+
+    test('a long list of owners is cut short', () => {
+        expect(castleOwners(['A', 'B'])).toBe('A, B');
+        expect(castleOwners(['A', 'B', 'C', 'D', 'E', 'F', 'G'])).toBe('A, B, C, D, E and 2 more');
+        expect(castleOwners(['{red}X'])).toBe('{{red}X');
     });
 
     test('owners go straight in by the door they left from', async () => {

@@ -21,9 +21,18 @@ export type Flags = {
     foundMinigun: boolean;
 };
 
+// What belongs to the world, not one player: on a server, everyone shares
+// it. (In single-player it's saved with the game.)
+export type Shared = {
+    // Everyone who has bought the castle (anyone can).
+    castleOwners: readonly string[];
+};
+
+export const shared: Shared = { castleOwners: [] };
+
 // What scripts get, and what they are.
-export type G = ScriptContext<Flags>;
-export type Script = EngineScript<Flags>;
+export type G = ScriptContext<Flags, Shared>;
+export type Script = EngineScript<Flags, Shared>;
 
 export const start: Player<Flags> = {
     name: '',

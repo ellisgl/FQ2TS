@@ -1,6 +1,7 @@
 // One-off scenes: the old woman, the hotel, the castle and Port City.
 
 import { at } from '@fq2js/engine/assert';
+import { escapeMarkup } from '@fq2js/engine/text';
 import type { G } from '../start.ts';
 
 const CONTINUE = '{lightgreen}<{green}Continue{lightgreen}>';
@@ -76,11 +77,36 @@ export async function hotelGuard(g: G): Promise<void> {
     g.write('{yellow}You say: {white}"What a dumbass..."');
 }
 
+// Who owns the castle: anyone can buy it, and the world keeps a list.
+const MAX_OWNERS_SHOWN = 5;
+
+export function castleOwners(owners: readonly string[]): string {
+    const named = owners.slice(0, MAX_OWNERS_SHOWN).map(escapeMarkup).join(', ');
+    const more = owners.length - MAX_OWNERS_SHOWN;
+    return more > 0 ? `${named} and ${more} more` : named;
+}
+
+// Adds the player to the castle's owners, once.
+function ownCastle(g: G): void {
+    if (g.name && !g.world.castleOwners.includes(g.name)) {
+        g.world.castleOwners = [...g.world.castleOwners, g.name];
+    }
+}
+
 export async function castle(g: G): Promise<void> {
     const f = g.flags;
-    if (!f.ownsCastle) {
+    if (f.ownsCastle) {
+        // (An owner from before the world kept a list is put on it.)
+        ownCastle(g);
+    } else {
+        const owners = g.world.castleOwners;
         g.cls();
-        g.print('{green}A guard says... "{white}The owner of this castle wishes to sell.{green}"', '', '{green}Would you like to buy it?', '');
+        if (owners.length) {
+            g.print('{green}A guard says... "{white}The owners of this castle will sell you a share.{green}"', `{green}Its owners so far: {lightcyan}${castleOwners(owners)}{green}.`);
+        } else {
+            g.print('{green}A guard says... "{white}The owner of this castle wishes to sell.{green}"');
+        }
+        g.print('', '{green}Would you like to buy it?', '');
         if ((await g.choice(['Maybe.... How much?', 'Leave...'])) !== 0) {
             return;
         }
@@ -96,6 +122,7 @@ export async function castle(g: G): Promise<void> {
             return;
         }
         f.ownsCastle = true;
+        ownCastle(g);
         g.gold -= 10000;
         g.print('{green}You have {white}purchased{green} a new castle!  The guards will now let you', '{green}pass.', '', CONTINUE);
         await g.key();
