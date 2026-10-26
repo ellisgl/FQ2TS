@@ -4,7 +4,7 @@ Final Quest 2 is a text-mode RPG writen QBASIC in late 90s, early 00s, inspired 
 
 The original QBASIC source, level editor, map renderer, map generator and REF scripting docs are in the original repo: [bafetk/final-quest-2](https://github.com/bafetk/final-quest-2).
 
-The original game running in DOSBox:
+The rewrite, in a terminal:
 
 ![main menu](screenshots/menu.png)
 
@@ -67,7 +67,11 @@ bun run view -s 82,721-726         # only some screens (-o sets the output file,
 
 The editor opens on an overview of the whole 80x24 world grid, one cell per screen, coloured by kind. From there you can create, copy, delete and re-kind screens, and press Enter to edit one. Screens are painted with a brush (character, colours, and whether it's solid) using the keyboard or the mouse. Left-drag paints, right-drag selects, and a middle click picks up a cell as the brush. The bottom row is a palette: click the brush for the character picker, a colour to use it, `fg` or `bg` (or press A) to pick from all 256 colours, or HARD/SOFT to switch. In the overview, click a screen to select it and click again to open it. There's a character picker (pages of box drawing, blocks, symbols, arrows, letters and more; or type any character, or give its code point with Tab), rectangle selections with fill, copy and stamp, undo/redo, and overlays for solid cells and trigger tiles. S saves to the map folder, and only screens that changed are rewritten.
 
+![the level editor, on Stone Valley](screenshots/leveleditor.png)
+
 The viewer lays the outdoor screens out where they sit on the world grid and lists the interiors after them, in their real characters and colours. It can zoom, and outline solid cells and trigger tiles.
+
+![the whole world in the viewer](screenshots/view.png)
 
 The generator fills outdoor screens with land, water, forest, mountains and winding trails in the style of the hand-made screens. First create the screens in the editor (N makes a blank screen of a chosen kind); the generator fills blank screens, and only replaces finished ones with `--force`.
 - Water follows the kinds: water screens become lakes and seas, and coasts form where they meet land, including hand-made land.
