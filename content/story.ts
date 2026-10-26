@@ -1,5 +1,5 @@
 // What happens when a new game starts.
-import { escapeMarkup } from '@fq2js/engine/text';
+import { escapeMarkup } from '@fq2ts/engine/text';
 import type { G } from './start.ts';
 
 // The longest name the status line has room for.

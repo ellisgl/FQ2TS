@@ -1,7 +1,7 @@
 // The Wyrm, fought by everyone, and the hall of heroes.
 
 import { afterEach, describe, expect, spyOn, test, type Mock } from 'bun:test';
-import { MemoryWorld } from '@fq2js/engine/shared';
+import { MemoryWorld } from '@fq2ts/engine/shared';
 import { WYRM_RETURNS_AFTER, daysBetween, fame, hallOfHeroes, today, wyrm, wyrmMaxHp } from '../../content/scripts/realm.ts';
 import { castle } from '../../content/scripts/places.ts';
 import { makeGame, newPlayer, pick, screenText, scriptContext } from '../helpers.ts';

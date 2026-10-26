@@ -4,18 +4,18 @@
 
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
-import { World } from '@fq2js/engine/world';
-import { readConfig, type Config, type Game } from '@fq2js/engine/game';
-import { readBestiary, type Bestiary } from '@fq2js/engine/combat';
-import { readItems, type ItemCatalogue } from '@fq2js/engine/items';
-import { ScriptContext } from '@fq2js/engine/script';
-import type { Player } from '@fq2js/engine/player';
-import type { FakeTerminal } from '@fq2js/engine/testing';
-import { makeGameWith, type GameSetup } from '@fq2js/engine/fixture';
+import { World } from '@fq2ts/engine/world';
+import { readConfig, type Config, type Game } from '@fq2ts/engine/game';
+import { readBestiary, type Bestiary } from '@fq2ts/engine/combat';
+import { readItems, type ItemCatalogue } from '@fq2ts/engine/items';
+import { ScriptContext } from '@fq2ts/engine/script';
+import type { Player } from '@fq2ts/engine/player';
+import type { FakeTerminal } from '@fq2ts/engine/testing';
+import { makeGameWith, type GameSetup } from '@fq2ts/engine/fixture';
 import content from '../content/index.ts';
 import { start, type Flags, type Shared } from '../content/start.ts';
 
-export * from '@fq2js/engine/testing';
+export * from '@fq2ts/engine/testing';
 
 const ROOT = join(import.meta.dir, '..');
 

@@ -4,7 +4,7 @@
 import { expect, test } from 'bun:test';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { readMap, writeMap } from '@fq2js/engine/world';
+import { readMap, writeMap } from '@fq2ts/engine/world';
 import { gameWorld } from '../helpers.ts';
 
 const MAPS = join(import.meta.dir, '..', '..', 'data', 'maps');

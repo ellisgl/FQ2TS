@@ -4,8 +4,8 @@
 import { describe, expect, test } from 'bun:test';
 import content from '../../content/index.ts';
 import { start, type Flags } from '../../content/start.ts';
-import { MAP_HEIGHT, MAP_WIDTH } from '@fq2js/engine/world';
-import { ScriptContext } from '@fq2js/engine/script';
+import { MAP_HEIGHT, MAP_WIDTH } from '@fq2ts/engine/world';
+import { ScriptContext } from '@fq2ts/engine/script';
 import { gameWorld, makeGame, newPlayer } from '../helpers.ts';
 
 const world = gameWorld();

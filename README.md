@@ -96,9 +96,9 @@ Code style follows the PER Coding Style (adapted from PHP): 4-space indents, sin
 
 The repository is a Bun workspace: an engine and its multiplayer server and map tools as packages that other games could use, and Final Quest 2 as a game built on them.
 
-- [packages/engine/](packages/engine/) (`@fq2js/engine`) is the game engine: terminal, screen, text markup, world, combat, items, saves, and the `g` API that scripts use ([script.ts](packages/engine/src/script.ts)). [testing.ts](packages/engine/src/testing.ts) is a kit for testing games: a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, and small maps, worlds and monsters.
-- [packages/server/](packages/server/) (`@fq2js/server`) is the multiplayer server: SSH and web connections, accounts with email addresses, saves (SQLite, with [migrations](packages/server/src/migrations.ts)), and each player's session. [cli.ts](packages/server/src/cli.ts) is its command line, which a game runs with its content.
-- [packages/tools/](packages/tools/) (`@fq2js/tools`) holds the map tools (see Tools above); a game gives them its map folder and trigger tiles.
+- [packages/engine/](packages/engine/) (`@fq2ts/engine`) is the game engine: terminal, screen, text markup, world, combat, items, saves, and the `g` API that scripts use ([script.ts](packages/engine/src/script.ts)). [testing.ts](packages/engine/src/testing.ts) is a kit for testing games: a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, and small maps, worlds and monsters.
+- [packages/server/](packages/server/) (`@fq2ts/server`) is the multiplayer server: SSH and web connections, accounts with email addresses, saves (SQLite, with [migrations](packages/server/src/migrations.ts)), and each player's session. [cli.ts](packages/server/src/cli.ts) is its command line, which a game runs with its content.
+- [packages/tools/](packages/tools/) (`@fq2ts/tools`) holds the map tools (see Tools above); a game gives them its map folder and trigger tiles.
 - [games/hello/](games/hello/) is Hello Quest (`bun run hello`), the smallest whole game on the engine: three screens, a sign, a hermit and some monsters. [docs/making-a-game.md](docs/making-a-game.md) builds it step by step, as a guide to making your own.
 - [games/fq2/](games/fq2/) is Final Quest 2:
   - [fq2.ts](games/fq2/fq2.ts) is the single-player entry point, [server.ts](games/fq2/server.ts) the multiplayer one, and [tools/](games/fq2/tools/) runs the map tools on its maps.

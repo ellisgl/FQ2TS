@@ -48,7 +48,7 @@ game's joins up with it, so the player can walk across.
 ## mod.ts
 
 ```ts
-import type { Mod } from '@fq2js/engine/mods';
+import type { Mod } from '@fq2ts/engine/mods';
 
 export default {
     id: 'wishing-well',          // lower case letters, digits and dashes

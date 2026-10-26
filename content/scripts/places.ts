@@ -1,7 +1,7 @@
 // One-off scenes: the old woman, the hotel, the castle and Port City.
 
-import { at } from '@fq2js/engine/assert';
-import { escapeMarkup } from '@fq2js/engine/text';
+import { at } from '@fq2ts/engine/assert';
+import { escapeMarkup } from '@fq2ts/engine/text';
 import type { G } from '../start.ts';
 import { hero } from './realm.ts';
 

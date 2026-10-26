@@ -3,14 +3,14 @@
 // or: bun start / bun run debug
 //
 // Mods come from DIR, or the mods folder where the game is started, if
-// there is one (see @fq2js/engine/mods).
+// there is one (see @fq2ts/engine/mods).
 
 import { join, resolve } from 'node:path';
-import { Terminal } from '@fq2js/engine/terminal';
-import { Saves } from '@fq2js/engine/saves';
-import { Game } from '@fq2js/engine/game';
-import { readGameData } from '@fq2js/engine/data';
-import { applyMods, loadMods } from '@fq2js/engine/mods';
+import { Terminal } from '@fq2ts/engine/terminal';
+import { Saves } from '@fq2ts/engine/saves';
+import { Game } from '@fq2ts/engine/game';
+import { readGameData } from '@fq2ts/engine/data';
+import { applyMods, loadMods } from '@fq2ts/engine/mods';
 import content from './content/index.ts';
 
 const args = process.argv.slice(2);
