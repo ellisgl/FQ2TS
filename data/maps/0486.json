@@ -2,6 +2,7 @@
   "screen": 486,
   "name": "Port City",
   "kind": 3,
+  "safe": true,
   "tiles": [
     " ║  ♠                               ♠ ♠       ♠               █████            ",
     " ║       ♠      ║             ♠                               ███████          ",

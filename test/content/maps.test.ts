@@ -31,3 +31,10 @@ test("the game's maps all have terrain and some have names", () => {
         expect(readFileSync(join(MAPS, file), 'utf8')).toContain('"terrain"');
     }
 });
+
+test('every town is safe from fights between players', () => {
+    const world = gameWorld();
+    const towns = world.screens().filter((screen) => [3, 4, 6, 7].includes(world.kind(screen) ?? -1));
+    expect(towns).toContain(82);
+    expect(towns.filter((screen) => !world.isSafe(screen))).toEqual([]);
+});
