@@ -170,7 +170,7 @@ bun run admin addresses                 # the banned addresses
 A ban from the command line stops the player coming back in; to put them
 out now, kick them from the game. Every kick and ban is in the log.
 
-## Limits on guessing passwords
+## Limits on abuse
 
 Three wrong passwords close a connection, and the server also counts them
 across connections: by default, 10 wrong passwords from one address (or 20
@@ -181,6 +181,14 @@ of it is in the log, and all of it can be changed:
 `FQ2_LOCKOUT_MINUTES` and `FQ2_CONNECTIONS_PER_MINUTE`. (A lock on an
 account can be set off by someone else guessing at it, which shuts its
 owner out too, but only for the lockout.)
+
+New accounts send a code to the address they give, so that can't be used
+to fill a stranger's inbox: an address can make 5 accounts an hour and
+have 10 emails sent, and any one email address can be sent 3 an hour
+(`FQ2_SIGN_UPS_PER_ADDRESS`, `FQ2_EMAILS_PER_ADDRESS`,
+`FQ2_EMAILS_PER_RECIPIENT`). Accounts that never confirm their address
+(or play) are removed after a week, freeing their names
+(`FQ2_UNFINISHED_ACCOUNT_DAYS`).
 
 ## Backups
 
