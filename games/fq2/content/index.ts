@@ -7,6 +7,21 @@ import { screens } from './screens.ts';
 import { shared, start, upgradeSave, type Flags, type Shared } from './start.ts';
 import { events } from './events.ts';
 
-const content: Content<Flags, Shared> = { title, help, credits, worldMapLegend, statusLine, inventory, newGame, start, world: shared, screens, events, upgradeSave };
+const content: Content<Flags, Shared> = {
+    title,
+    help,
+    credits,
+    worldMapLegend,
+    statusLine,
+    inventory,
+    newGame,
+    start,
+    // One drink a day at the bar (on a server, the day turns at midnight).
+    daily: ['hadDrink'],
+    world: shared,
+    screens,
+    events,
+    upgradeSave,
+};
 
 export default content;

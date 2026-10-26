@@ -145,6 +145,22 @@ Each phase ends playable, tested and committed.
     of everyone who has (`castleOwners`); the guard names them. The barn
     gold and the minigun stay each player's own.
 
+- **Phase 5: done.** H fights a player next to you on the map: you fight
+  their stats (strength and weapon to hit, defence and armour to take
+  blows, their hitpoints now), and they're told at once and of the end.
+  The loser gives the winner half their gold and is left on 1 hitpoint;
+  the winner gets a tenth of the loser's experience, and the news has it.
+  - Not on safe screens: interiors, and screens marked `"safe": true` in
+    their map files (P in the editor's overview). Not against a player on
+    1 hitpoint, nor one in a scene of their own, and 3 fights a day.
+  - At midnight (server time) a new day dawns: the news says so, and
+    each player's fights and the content's daily flags (`Content.daily`;
+    FQ2's one drink a day) start again: at once for those in the realm,
+    as they arrive for the rest. The server keeps its day in the database
+    (step 6), so a day that turned while it was down is noticed.
+  - The engine's fights take `defeat` and `victory` options (what losing
+    does, and winning says).
+
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.
@@ -160,8 +176,9 @@ Each phase ends playable, tested and committed.
 2. ~~**Which flags become world-wide.**~~ Decided: everyone can buy the
    castle, and the world keeps the list of who has. The barn gold and the
    minigun stay each player's.
-3. **PvP rules.** What the loser loses, and whether offline players can be
-   attacked (LORD I: yes; LORD II: no).
+3. ~~**PvP rules.**~~ Decided: the loser gives half their gold to the
+   winner and is left on 1 hitpoint; only players online, next to you, can
+   be attacked (as LORD II).
 4. ~~**Telnet sends passwords in the clear.**~~ Decided: SSH (any user
    name, no password, then the game's login screen) for secure terminal
    play, and the web client over TLS; telnet stays for LANs and BBSes and
