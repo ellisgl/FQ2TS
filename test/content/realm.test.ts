@@ -2,9 +2,9 @@
 
 import { afterEach, describe, expect, spyOn, test, type Mock } from 'bun:test';
 import { MemoryWorld } from '@fq2js/engine/shared';
-import { WYRM_RETURNS_AFTER, daysBetween, hallOfHeroes, today, wyrm, wyrmMaxHp } from '../../content/scripts/realm.ts';
+import { WYRM_RETURNS_AFTER, daysBetween, fame, hallOfHeroes, today, wyrm, wyrmMaxHp } from '../../content/scripts/realm.ts';
 import { castle } from '../../content/scripts/places.ts';
-import { newPlayer, pick, screenText, scriptContext } from '../helpers.ts';
+import { makeGame, newPlayer, pick, screenText, scriptContext } from '../helpers.ts';
 
 const DAY = 86_400_000;
 const NOON = new Date(2026, 9, 26, 12, 0).getTime();
@@ -145,5 +145,70 @@ describe('the hall of heroes', () => {
         });
         await hallOfHeroes(hall.g);
         expect(hall.term.remaining).toBe(0);
+    });
+});
+
+describe('F: fame', () => {
+    test('the hall of heroes, the castle and the Wyrm, on one screen', async () => {
+        at(0);
+        const store = new MemoryWorld();
+        store.set('heroes', ['Ann slew the Wyrm (level 1).', 'Bob was the first to buy a share of the castle.']);
+        store.set('castleOwners', ['Bob', 'Ann']);
+        store.set('wyrmLevel', 2);
+        store.set('wyrmHp', 0);
+        store.set('wyrmSlainOn', today(NOON - DAY));
+        const { g, term } = scriptContext({
+            worldStore: store,
+            steps: [
+                () => {
+                    const lines = screenText(term.screen).split('\n').map((line) => line.trim()).filter(Boolean);
+                    const from = lines.indexOf('The hall of heroes');
+                    expect(lines.slice(from, from + 7)).toEqual([
+                        'The hall of heroes',
+                        'Bob was the first to buy a share of the castle.',
+                        'Ann slew the Wyrm (level 1).',
+                        'The castle',
+                        'Owned by Bob, Ann.',
+                        'The Wyrm, west of Stone Valley',
+                        `Slain. It returns in ${WYRM_RETURNS_AFTER - 1} days.`,
+                    ]);
+                    return 'escape';
+                },
+            ],
+        });
+        await fame(g);
+        expect(term.remaining).toBe(0);
+    });
+
+    test('before anything has happened', async () => {
+        const { g, term } = scriptContext({
+            steps: [
+                () => {
+                    const text = screenText(term.screen);
+                    expect(text).toContain('No deeds yet.');
+                    expect(text).toContain('For sale.');
+                    expect(text).toContain(`Level 1: ${wyrmMaxHp(1)} of ${wyrmMaxHp(1)} hitpoints left.`);
+                    return 'escape';
+                },
+            ],
+        });
+        await fame(g);
+    });
+
+    test('is F, from the map', async () => {
+        const { game, term } = makeGame({
+            steps: [
+                ...pick(4),
+                'f',
+                () => {
+                    expect(screenText(term.screen)).toContain('The hall of heroes');
+                    return 'escape';
+                },
+                'escape',
+                'escape',
+            ],
+        });
+        await game.run();
+        expect(term.remaining).toBe(0);
     });
 });

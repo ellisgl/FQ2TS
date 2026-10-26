@@ -94,9 +94,9 @@ happens:
    timeout is for the status bar message, which goes after a few seconds,
    and the screensaver.
 3. **Which key.** `play()` looks the key up: arrows and 8 4 6 2 are moves
-   (`MOVES`); I, M, B, R, ? and Escape are built-in screens; a server's
-   extra keys (P, L, T...) are scripts; anything else might start a cheat
-   word.
+   (`MOVES`); I, M, B, R, ? and Escape are built-in screens; the game's
+   own keys (FQ2's F) and a server's (P, L, T...) are scripts; anything
+   else might start a cheat word.
 4. **The step.** `Game.move(1, 0)` works out the new cell. Off the edge of
    the screen, `crossEdge` goes to the next screen. Otherwise, if the cell
    has a trigger (a script in `content.screens[82].at`, by its `"x,y"`),
