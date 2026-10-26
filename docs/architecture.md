@@ -14,7 +14,7 @@ to write a mod, [mods.md](mods.md).)
    server.ts  tools/                  tools/
         │                                  │
         ▼                                  ▼
- packages/engine ◄──── packages/server  (multiplayer: telnet, SSH, web)
+ packages/engine ◄──── packages/server  (multiplayer: SSH, web)
    the game itself  ◄── packages/tools  (map viewer, editor, generator)
 ```
 
@@ -166,15 +166,14 @@ just more content.
 one process:
 
 ```
- telnet ─┐                           ┌─► Game (Ann)   ─┐
- SSH ────┼─► Connection ─► Terminal ─┼─► Game (Bob)   ─┼─► Realm: who's where
+ SSH ────┐                           ┌─► Game (Ann)   ─┐
+         ├─► Connection ─► Terminal ─┼─► Game (Bob)   ─┼─► Realm: who's where
  web ────┘   (RemoteIO)    Session   └─► Game (Cat)   ─┘   Store: SQLite
 ```
 
 - **A connection** ([server.ts](../packages/server/src/server.ts)) is one
-  player's socket: telnet ([telnet.ts](../packages/server/src/telnet.ts)
-  takes out telnet's own commands), SSH ([ssh.ts](../packages/server/src/ssh.ts))
-  or a web socket from the page ([client.html](../packages/server/src/client.html),
+  player's socket: SSH ([ssh.ts](../packages/server/src/ssh.ts)) or a web
+  socket from the page ([client.html](../packages/server/src/client.html),
   using xterm.js). Each gets a `RemoteIO`, which pretends to be a keyboard
   and a terminal, and a `Terminal` on top, so the game runs exactly as it
   does on your own screen.
@@ -245,7 +244,7 @@ level up:
   Quest ([fixture.ts](../packages/engine/src/fixture.ts)); FQ2's tests play
   Final Quest 2.
 - **The real server**: the server tests start a server and connect to it
-  over telnet, SSH and web sockets, as players would. A model of each
+  over SSH and web sockets, as players would. A model of each
   client's screen ([screen-model.ts](../packages/server/test/screen-model.ts))
   follows what the server sends, so a test can wait until "Bob says: hello"
   is on Ann's screen.

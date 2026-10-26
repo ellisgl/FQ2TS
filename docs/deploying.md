@@ -6,8 +6,9 @@ systemd, with the web page behind HTTPS, admins, backups and upgrades.
 ## What it needs
 
 - Linux with [Bun](https://bun.sh) 1.3 or later.
-- Open ports for the ways players connect: telnet (2323), SSH (2222), and
-  HTTPS (443) for the web page, through a proxy (below).
+- Open ports for the ways players connect: SSH (2222), and HTTPS (443) for
+  the web page, through a proxy (below). (There's no telnet: it would send
+  passwords in the clear.)
 - An SMTP account to send players' codes (confirming email addresses,
   resetting passwords). Without one, codes are only written to the log.
 
@@ -38,7 +39,7 @@ chmod 600 .env          # it holds the SMTP password
 For a public server, the important ones:
 
 ```sh
-FQ2_HOST=0.0.0.0           # telnet and SSH listen to everyone...
+FQ2_HOST=0.0.0.0           # SSH listens to everyone...
 FQ2_WEB_HOST=127.0.0.1     # ...the web page only to the proxy, on this machine
 FQ2_TRUST_PROXY=true       # web players' real addresses, from the proxy
 FQ2_SMTP_HOST=smtp.example.com
@@ -47,8 +48,8 @@ FQ2_SMTP_PASSWORD=...
 FQ2_MAIL_FROM=Final Quest 2 <game@example.com>
 ```
 
-Turn off what you don't want (`FQ2_NO_TELNET=true`: telnet sends passwords
-unencrypted). `bun run server -h` lists every setting.
+Turn off what you don't want (`FQ2_NO_SSH=true`, `FQ2_NO_WEB=true`).
+`bun run server -h` lists every setting.
 
 The game rules can be changed the same way: how many fights between
 players a day (`FQ2_FIGHTS_PER_DAY`), what the winner takes, how often
@@ -87,10 +88,9 @@ sudo systemctl enable --now fq2
 journalctl -u fq2 -f       # the log: who comes and goes, kicks and bans, errors
 ```
 
-To use the usual ports (telnet's 23, SSH's 22 if the machine's own SSH is
-elsewhere), let the service bind them with
-`AmbientCapabilities=CAP_NET_BIND_SERVICE` under `[Service]`, and set
-`FQ2_TELNET_PORT=23`.
+To use SSH's usual port (22, if the machine's own SSH is elsewhere), let
+the service bind it with `AmbientCapabilities=CAP_NET_BIND_SERVICE` under
+`[Service]`, and set `FQ2_SSH_PORT=22`.
 
 ## The web page, over HTTPS
 
@@ -136,7 +136,6 @@ Open the firewall for the proxy and the game, not the web port itself:
 
 ```sh
 sudo ufw allow 80,443/tcp
-sudo ufw allow 2323/tcp     # telnet
 sudo ufw allow 2222/tcp     # SSH
 ```
 

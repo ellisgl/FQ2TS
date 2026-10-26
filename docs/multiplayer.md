@@ -2,7 +2,7 @@
 
 Final Quest 2 was inspired by Legend of the Red Dragon II, a multiplayer BBS
 door game. This is the plan for live multiplayer in the TypeScript version:
-players connect to one server by telnet or a web browser, see each other move
+players connect to one server by SSH or a web browser, see each other move
 around the map, talk, and fight.
 
 Single-player stays as it is (`bun start`, with save slots). Multiplayer is a
@@ -12,7 +12,7 @@ separate entry point (`bun run server`).
 
 ```
                        +------------- server.ts (one Bun process) -------------+
- telnet client --TCP-->| TelnetConnection -> Terminal -> Session (Game) --+     |
+ SSH client ----TCP-->| SshConnection    -> Terminal -> Session (Game) --+     |
  browser (xterm.js) WS>| WebConnection    -> Terminal -> Session (Game) --+     |
                        |                                                 v     |
                        |        Realm: who's online, where, chat, news,        |
@@ -22,9 +22,7 @@ separate entry point (`bun run server`).
 
 - **Connections** turn a socket into the `TerminalInput` / `TerminalOutput`
   pair `Terminal` already accepts.
-  - Telnet needs a small protocol layer: echo off, character-at-a-time
-    input, window size (NAWS) for the 80x25 check, and stripping telnet
-    commands from the input.
+  - SSH (ssh2) gives a shell with the window size for the 80x25 check.
   - The web client is a static page with xterm.js, sending keys and resizes
     over a WebSocket (the editor's mouse support works there too).
 - **Session**: today's `Game`, one per connection, with the player's state
@@ -63,7 +61,7 @@ Each phase ends playable, tested and committed.
      so other players' moves are only drawn on the map.
    - Text players write (names; later chat and mail) is escaped, so it
      can't inject colour markup into other players' screens.
-1. **The server.** Telnet and WebSocket transports and the browser page;
+1. **The server.** SSH and WebSocket transports and the browser page;
    accounts with password hashes (`Bun.password`, argon2id); login and new
    player screens in place of save and load; autosave; idle timeout and a
    connection limit; each session's errors contained to that session.
@@ -82,7 +80,7 @@ Each phase ends playable, tested and committed.
 
 - **Phase 0: done.** `autosave`, `Game.showingMap`, `escapeMarkup`.
 - **Phase 1: done.** `bun run server` (see the README). Notes:
-  - Telnet output is UTF-8 only (open question 1, decided).
+  - Output is UTF-8 only (open question 1, decided).
   - The server listens on 127.0.0.1 unless given `--host`.
   - Bun 1.3's `server.stop()` promise never settles once a web socket has
     connected (it does stop listening), so shutdown doesn't wait on it.
@@ -170,7 +168,7 @@ Each phase ends playable, tested and committed.
     from the command line. A banned player is told why at the door.
     Kicks and bans are logged. (Database step 7.)
   - `--web-host` (`FQ2_WEB_HOST`) lets the web page listen only to the
-    proxy while telnet and SSH listen to everyone.
+    proxy while SSH listens to everyone.
   - The config file is `.env`; the log is the server's output (the
     journal, under systemd).
 
@@ -197,13 +195,12 @@ Each phase ends playable, tested and committed.
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.
-- The telnet layer: unit tests for its command parsing.
 - One integration test that starts the server on a random port and
-  connects with a TCP client and a WebSocket.
+  connects with an SSH client and a WebSocket.
 
 ## Open questions
 
-1. ~~**Telnet character set.**~~ Decided: UTF-8 only. The game uses
+1. ~~**Character set.**~~ Decided: UTF-8 only. The game uses
    Unicode throughout (any character one column wide), not CP437, so
    CP437-only BBS clients aren't supported.
 2. ~~**Which flags become world-wide.**~~ Decided: everyone can buy the
@@ -214,5 +211,6 @@ Each phase ends playable, tested and committed.
    be attacked (as LORD II).
 4. ~~**Telnet sends passwords in the clear.**~~ Decided: SSH (any user
    name, no password, then the game's login screen) for secure terminal
-   play, and the web client over TLS; telnet stays for LANs and BBSes and
-   can be turned off. No telnet over TLS: few clients support it.
+   play, and the web client over TLS. Telnet was there at first (for LANs
+   and BBSes), and has since been taken out: it sent passwords in the
+   clear. No telnet over TLS: few clients support it.

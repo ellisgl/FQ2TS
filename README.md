@@ -31,11 +31,11 @@ Items are defined in `games/fq2/data/items.json` and monsters and encounter tabl
 ## Multiplayer server
 
 ```sh
-bun run server                     # telnet on 2323, SSH on 2222, web on http://127.0.0.1:8080/
+bun run server                     # SSH on 2222, web on http://127.0.0.1:8080/
 bun run server --host 0.0.0.0      # let other computers connect (-h for all the options)
 ```
 
-Players connect with a telnet client (`telnet localhost 2323`), SSH (`ssh -p 2222 localhost`, with any user name and no password) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and one address can only have one account. A forgotten password is reset from the login menu with another code, and the address can be changed from the menu in the game (Escape), which takes the password and a code sent to the new address. The codes are sent through an SMTP server:
+Players connect with SSH (`ssh -p 2222 localhost`, with any user name and no password) or a web browser, make an account, and play. Every account has an email address, confirmed with a code sent to it, and one address can only have one account. A forgotten password is reset from the login menu with another code, and the address can be changed from the menu in the game (Escape), which takes the password and a code sent to the new address. The codes are sent through an SMTP server:
 
 ```sh
 FQ2_SMTP_PASSWORD=... bun run server --smtp-host smtp.example.com --smtp-user game@example.com
@@ -45,7 +45,7 @@ Without `--smtp-host`, emails are written to the server's log instead, for tryin
 
 Every option can also be set as an environment variable (`--smtp-host` is `FQ2_SMTP_HOST`, and so on), or kept in a `.env` file in the folder the server is started from: copy [.env.example](.env.example) to `.env` and fill it in. Options on the command line win. `.env` is ignored by git, so the SMTP password stays out of the repository.
 
-Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. Telnet sends passwords unencrypted, so for play over the internet use SSH, or the web page behind HTTPS (`--no-telnet` turns telnet off). The server makes its SSH host key the first time, in `server-data/ssh_host_ed25519_key`; keep it, or players' SSH clients will warn that the server has changed.
+Players' games are saved in `server-data/fq2.sqlite` as they go (passwords are stored as argon2id hashes). The server listens only on this computer unless given `--host`. There's no telnet, as it would send passwords unencrypted. SSH is encrypted; the web page is plain HTTP, so over the internet put it behind HTTPS (see [docs/deploying.md](docs/deploying.md)). The server makes its SSH host key the first time, in `server-data/ssh_host_ed25519_key`; keep it, or players' SSH clients will warn that the server has changed.
 
 (ssh2 is patched, in [patches/](patches/), not to load its optional native add-ons: Bun crashes loading them. It works without them.) Players see each other on the map (☻) and hear when someone enters or leaves the realm. On the server, T says something to the players on your screen, Y yells to everyone, W reads and writes letters, D shows the daily news, H fights a player next to you (not on safe screens, three times a day), G gives a player next to you gold or an item (A accepts what you're offered), K is the bounty board in town (gold on a player's head, for whoever beats them), P lists who's in the realm and L ranks every player; ? lists them all. Everyone shares the Wyrm in the mountains west of Stone Valley, wearing it down together, one fight a day each, and the realm's deeds go on the hall of heroes' plaque in Stone Valley. F, anywhere, shows the hall, who owns the castle and how the Wyrm is. A new day dawns at midnight. Admins (`bun run admin admin NAME`) press ! in the game to kick, ban and unban players; [docs/deploying.md](docs/deploying.md) covers running a server for real: systemd, HTTPS, backups and upgrades. The cheat words are off on the server. See [docs/multiplayer.md](docs/multiplayer.md) for what's next.
 
@@ -93,7 +93,7 @@ Code style follows the PER Coding Style (adapted from PHP): 4-space indents, sin
 The repository is a Bun workspace: an engine and its multiplayer server and map tools as packages that other games could use, and Final Quest 2 as a game built on them.
 
 - [packages/engine/](packages/engine/) (`@fq2js/engine`) is the game engine: terminal, screen, text markup, world, combat, items, saves, and the `g` API that scripts use ([script.ts](packages/engine/src/script.ts)). [testing.ts](packages/engine/src/testing.ts) is a kit for testing games: a `FakeTerminal` that plays back scripted key presses, so whole games can be driven from a test, and small maps, worlds and monsters.
-- [packages/server/](packages/server/) (`@fq2js/server`) is the multiplayer server: telnet, SSH and web connections, accounts with email addresses, saves (SQLite, with [migrations](packages/server/src/migrations.ts)), and each player's session. [cli.ts](packages/server/src/cli.ts) is its command line, which a game runs with its content.
+- [packages/server/](packages/server/) (`@fq2js/server`) is the multiplayer server: SSH and web connections, accounts with email addresses, saves (SQLite, with [migrations](packages/server/src/migrations.ts)), and each player's session. [cli.ts](packages/server/src/cli.ts) is its command line, which a game runs with its content.
 - [packages/tools/](packages/tools/) (`@fq2js/tools`) holds the map tools (see Tools above); a game gives them its map folder and trigger tiles.
 - [games/hello/](games/hello/) is Hello Quest (`bun run hello`), the smallest whole game on the engine: three screens, a sign, a hermit and some monsters. [docs/making-a-game.md](docs/making-a-game.md) builds it step by step, as a guide to making your own.
 - [games/fq2/](games/fq2/) is Final Quest 2:
@@ -103,7 +103,7 @@ The repository is a Bun workspace: an engine and its multiplayer server and map 
 - Tests (`bun:test`) sit in each package's `test/` folder. The packages test themselves on Test Quest ([fixture.ts](packages/engine/src/fixture.ts)), a tiny game of four screens and a few triggers, with its data in [fixture/](packages/engine/src/fixture/), so they don't need Final Quest 2. FQ2's own tests are in [games/fq2/test/](games/fq2/test/): its scripts, data and maps, with its fixtures in [helpers.ts](games/fq2/test/helpers.ts). [content/data.test.ts](games/fq2/test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
 - [mods/](mods/) holds the mods to add to the game, and [docs/mods.md](docs/mods.md) is the guide to writing them ([mods.ts](packages/engine/src/mods.ts) is the loader).
 - [docs/architecture.md](docs/architecture.md) is a tour of how it all works: the parts, the life of a keypress, the server, and where to start reading.
-- [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (telnet, SSH and web, LORD II style).
+- [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (SSH and web, LORD II style).
 - [patches/](patches/) patches ssh2 not to load its native add-ons (Bun crashes loading them).
 
 ## License
