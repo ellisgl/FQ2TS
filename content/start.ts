@@ -3,6 +3,7 @@
 
 import type { Player } from '@fq2js/engine/player';
 import type { Script as EngineScript, ScriptContext } from '@fq2js/engine/script';
+import { wyrmMaxHp } from './scripts/realm.ts';
 
 // (A type alias, not an interface, so that it fits the engine's FlagRecord.)
 export type Flags = {
@@ -19,6 +20,8 @@ export type Flags = {
     oldManSeen: boolean;
     hadDrink: boolean;
     foundMinigun: boolean;
+    // The day this player last fought the Wyrm (once a day).
+    wyrmDay: string;
 };
 
 // What belongs to the world, not one player: on a server, everyone shares
@@ -26,9 +29,17 @@ export type Flags = {
 export type Shared = {
     // Everyone who has bought the castle (anyone can).
     castleOwners: readonly string[];
+    // The Wyrm, in the mountains west of Stone Valley: its hitpoints (0
+    // once slain), its level (it returns stronger), and the day it was
+    // slain ("" while it lives).
+    wyrmHp: number;
+    wyrmLevel: number;
+    wyrmSlainOn: string;
+    // The hall of heroes: lasting deeds, oldest first.
+    heroes: readonly string[];
 };
 
-export const shared: Shared = { castleOwners: [] };
+export const shared: Shared = { castleOwners: [], wyrmHp: wyrmMaxHp(1), wyrmLevel: 1, wyrmSlainOn: '', heroes: [] };
 
 // What scripts get, and what they are.
 export type G = ScriptContext<Flags, Shared>;
@@ -64,6 +75,7 @@ export const start: Player<Flags> = {
         oldManSeen: false,
         hadDrink: false,
         foundMinigun: false,
+        wyrmDay: '',
     },
 };
 
