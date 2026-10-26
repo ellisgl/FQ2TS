@@ -102,6 +102,7 @@ The repository is a Bun workspace: an engine and its multiplayer server and map 
   - [data/](games/fq2/data/) holds the game data as JSON: `config.json` (from VARS.DAT), `items.json` (the item catalogue), `monsters.json` (monsters and encounter tables, from NOSCR.DAT) and one file per screen in `data/maps/` (from MAPS.DAT, now with screen names and terrain).
 - Tests (`bun:test`) sit in each package's `test/` folder. The packages test themselves on Test Quest ([fixture.ts](packages/engine/src/fixture.ts)), a tiny game of four screens and a few triggers, with its data in [fixture/](packages/engine/src/fixture/), so they don't need Final Quest 2. FQ2's own tests are in [games/fq2/test/](games/fq2/test/): its scripts, data and maps, with its fixtures in [helpers.ts](games/fq2/test/helpers.ts). [content/data.test.ts](games/fq2/test/content/data.test.ts) runs every trigger in the game and checks that it sends the player somewhere real.
 - [mods/](mods/) holds the mods to add to the game, and [docs/mods.md](docs/mods.md) is the guide to writing them ([mods.ts](packages/engine/src/mods.ts) is the loader).
+- [docs/architecture.md](docs/architecture.md) is a tour of how it all works: the parts, the life of a keypress, the server, and where to start reading.
 - [docs/multiplayer.md](docs/multiplayer.md) is the plan for live multiplayer (telnet, SSH and web, LORD II style).
 - [patches/](patches/) patches ssh2 not to load its native add-ons (Bun crashes loading them).
 
