@@ -13,7 +13,7 @@ import type { Player } from '@fq2js/engine/player';
 import type { FakeTerminal } from '@fq2js/engine/testing';
 import { makeGameWith, type GameSetup } from '@fq2js/engine/fixture';
 import content from '../content/index.ts';
-import { start, type Flags } from '../content/start.ts';
+import { start, type Flags, type Shared } from '../content/start.ts';
 
 export * from '@fq2js/engine/testing';
 
@@ -45,18 +45,18 @@ export function newPlayer(changes: Partial<Player<Flags>> = {}, flags: Partial<F
 
 // A game of the real content, data and world (unless told otherwise), on a
 // scripted terminal, with a player already in it.
-export function makeGame(setup: GameSetup<Flags> = {}): { game: Game<Flags>; term: FakeTerminal } {
+export function makeGame(setup: GameSetup<Flags, Shared> = {}): { game: Game<Flags, Shared>; term: FakeTerminal } {
     return makeGameWith(content, { player: newPlayer(), world: gameWorld(), config, monsters: bestiary, items: itemCatalogue, ...setup });
 }
 
 // A script context in the real game: what content scripts get as `g`.
-export function scriptContext(setup: GameSetup<Flags> = {}): { g: ScriptContext<Flags>; game: Game<Flags>; term: FakeTerminal } {
+export function scriptContext(setup: GameSetup<Flags, Shared> = {}): { g: ScriptContext<Flags, Shared>; game: Game<Flags, Shared>; term: FakeTerminal } {
     const { game, term } = makeGame(setup);
     return { g: new ScriptContext(game), game, term };
 }
 
 // A trigger in the real game's screens table.
-export function trigger(screen: number, x: number, y: number): (g: ScriptContext<Flags>) => void | Promise<void> {
+export function trigger(screen: number, x: number, y: number): (g: ScriptContext<Flags, Shared>) => void | Promise<void> {
     const script = content.screens[screen]?.at?.[`${x},${y}`];
     if (!script) {
         throw new Error(`No trigger at ${x},${y} on screen ${screen}.`);

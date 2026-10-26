@@ -8,7 +8,7 @@
 // script moves them, travels or takes over the screen.
 
 import type { Content, Coord } from '@fq2js/engine/game';
-import type { Flags, Script } from './start.ts';
+import type { Flags, Script, Shared } from './start.ts';
 import { berries, bank, travelOffice, roshi, healer } from './scripts/town.ts';
 import { armourShop, weaponShop } from './scripts/shops.ts';
 import { oldWoman, hotelRunner, hotelGuard, castle, bar, cityGuards } from './scripts/places.ts';
@@ -30,7 +30,7 @@ const nightstand = say('{white}A nightstand.');
 const sink = say('{white}A sink.');
 const stove = say('{white}A stove.');
 
-export const screens: Content<Flags>['screens'] = {
+export const screens: Content<Flags, Shared>['screens'] = {
     // North of Stone Valley
     2: {
         show(g) {

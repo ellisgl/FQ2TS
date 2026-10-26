@@ -90,6 +90,11 @@ export default {
   (see `ScriptContext` in
   [packages/engine/src/script.ts](../packages/engine/src/script.ts)), and
   `mod`, which holds the mod's flags. Scripts can be `async`.
+- **`world`** is the mod's own world state, as `flags` are its own
+  flags: what belongs to the world rather than a player (shared by
+  everyone on a server). Values are like flags, or lists of strings; use
+  them as `mod.world.name`, and set a new list rather than changing one.
+  The game's own is in `g.world`, untyped.
 - **`flags`** are the mod's own: give each its starting value (true or
   false, a number or a string) and use them as `mod.flags.wishes`. They're
   saved with the player as `"wishing-well.wishes"`, so they can't clash

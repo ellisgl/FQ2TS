@@ -7,9 +7,9 @@ import { at } from '@fq2js/engine/assert';
 import type { Config, Content } from '@fq2js/engine/game';
 import type { Player } from '@fq2js/engine/player';
 import type { ItemDef } from '@fq2js/engine/items';
-import type { Flags, G } from './start.ts';
+import type { Flags, G, Shared } from './start.ts';
 
-export const title: Content<Flags>['title'] = {
+export const title: Content<Flags, Shared>['title'] = {
     art: ({ version, revision }) => [
         String.raw`{y 1}{x 1}{on gray}{sp 35}{white}Main Menu{sp 36}`,
         String.raw`{y 2}{on gray} {on blue}{sp 78}{on gray} `,
