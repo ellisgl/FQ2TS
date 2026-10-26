@@ -161,6 +161,19 @@ Each phase ends playable, tested and committed.
   - The engine's fights take `defeat` and `victory` options (what losing
     does, and winning says).
 
+- **Phase 6: done.** Running it for real: [deploying.md](deploying.md)
+  (systemd, HTTPS through Caddy or nginx, the firewall, backups,
+  upgrades).
+  - Admins (marked with `bun run admin admin NAME`) get `!` in the game:
+    kick a player (they're told why), ban or unban an account, tell
+    everyone something. `bun run admin` lists accounts, bans and unbans
+    from the command line. A banned player is told why at the door.
+    Kicks and bans are logged. (Database step 7.)
+  - `--web-host` (`FQ2_WEB_HOST`) lets the web page listen only to the
+    proxy while telnet and SSH listen to everyone.
+  - The config file is `.env`; the log is the server's output (the
+    journal, under systemd).
+
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.
