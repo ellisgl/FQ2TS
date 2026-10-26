@@ -10,6 +10,7 @@
     "start": "bun games/fq2/fq2.ts",
     "debug": "bun games/fq2/fq2.ts --debug",
     "server": "bun games/fq2/server.ts",
+    "admin": "bun games/fq2/admin.ts",
     "edit": "bun games/fq2/tools/edit.ts",
     "generate": "bun games/fq2/tools/generate.ts",
     "view": "bun games/fq2/tools/view.ts",
