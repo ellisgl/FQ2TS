@@ -12,6 +12,7 @@ import type { Flags, Script, Shared } from './start.ts';
 import { berries, bank, travelOffice, roshi, healer } from './scripts/town.ts';
 import { armourShop, weaponShop } from './scripts/shops.ts';
 import { oldWoman, hotelRunner, hotelGuard, castle, bar, cityGuards } from './scripts/places.ts';
+import { hallOfHeroes, wyrm } from './scripts/realm.ts';
 
 const say = (text: string): Script => (g) => g.write(text);
 const door = (screen: number, x: number, y: number): Script => (g) => g.goto(screen, x, y);
@@ -53,14 +54,24 @@ export const screens: Content<Flags, Shared>['screens'] = {
     },
 
     81: {
+        // The Wyrm's lair, at the foot of the mountains.
+        show(g) {
+            g.overlay('{x 10}{y 12}{darkgray}∩');
+        },
         at: {
             '26,11': sign('↑-- Stone Valley   ↓-- Hill Valley'),
+            '10,12': wyrm,
         },
     },
 
     // Stone Valley
     82: {
+        // The hall of heroes' plaque.
+        show(g) {
+            g.overlay('{x 50}{y 18}{yellow}¶');
+        },
         at: {
+            '50,18': hallOfHeroes,
             '29,17'(g) {
                 g.write('{lightcyan}You have warped to {gray}Port City{lightcyan}.');
                 g.goto(486, 4, 13);

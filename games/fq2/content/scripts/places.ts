@@ -3,6 +3,7 @@
 import { at } from '@fq2js/engine/assert';
 import { escapeMarkup } from '@fq2js/engine/text';
 import type { G } from '../start.ts';
+import { hero } from './realm.ts';
 
 const CONTINUE = '{lightgreen}<{green}Continue{lightgreen}>';
 
@@ -86,9 +87,13 @@ export function castleOwners(owners: readonly string[]): string {
     return more > 0 ? `${named} and ${more} more` : named;
 }
 
-// Adds the player to the castle's owners, once.
+// Adds the player to the castle's owners, once (the first goes in the hall
+// of heroes).
 function ownCastle(g: G): void {
     if (g.name && !g.world.castleOwners.includes(g.name)) {
+        if (!g.world.castleOwners.length) {
+            hero(g, `${escapeMarkup(g.name)} was the first to buy a share of the castle.`);
+        }
         g.world.castleOwners = [...g.world.castleOwners, g.name];
     }
 }

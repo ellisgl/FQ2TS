@@ -184,6 +184,16 @@ Each phase ends playable, tested and committed.
   and stops logins from an address, or to an account, after too many
   wrong passwords across connections.
 
+- **And:** L reads the rankings kept beside the saves (step 9), not
+  every save. G and A give and accept gold or items between players
+  (nothing moves until it's accepted, and only if the giver still has
+  it). K is the bounty board, in town (step 10): gold on a player's head,
+  paid up front, collected by whoever beats them in a fight. In Final
+  Quest 2, the Wyrm's hitpoints are the world's, so everyone wears it
+  down together (once a day each; the last blow is rewarded; it returns
+  stronger three days later), and the hall of heroes keeps the realm's
+  lasting deeds (the Wyrm's slayers, the first to buy the castle).
+
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.
