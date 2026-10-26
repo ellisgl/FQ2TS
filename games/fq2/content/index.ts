@@ -6,6 +6,7 @@ import { newGame } from './story.ts';
 import { screens } from './screens.ts';
 import { shared, start, upgradeSave, type Flags, type Shared } from './start.ts';
 import { events } from './events.ts';
+import { fame } from './scripts/realm.ts';
 
 const content: Content<Flags, Shared> = {
     title,
@@ -18,6 +19,9 @@ const content: Content<Flags, Shared> = {
     start,
     // One drink a day at the bar (on a server, the day turns at midnight).
     daily: ['hadDrink'],
+    keys: {
+        F: { help: 'fame: the hall of heroes, the castle and the Wyrm', run: fame },
+    },
     world: shared,
     screens,
     events,

@@ -131,6 +131,34 @@ export async function wyrm(g: G): Promise<void> {
     await g.key();
 }
 
+// F, anywhere: what the realm knows of its heroes and its wonders, the
+// hall of heroes, the castle's owners, and how the Wyrm is.
+export async function fame(g: G): Promise<void> {
+    const { heroes, castleOwners, wyrmHp, wyrmLevel, wyrmSlainOn } = g.world;
+    const wyrmIs = wyrmHp > 0
+        ? `{white}Level ${wyrmLevel}: ${wyrmHp} of ${wyrmMaxHp(wyrmLevel)} hitpoints left.`
+        : `{gray}Slain. It returns ${returnsIn(wyrmSlainOn)}.`;
+    await g.scroll(
+        [
+            '{yellow}The hall of heroes',
+            ...(heroes.length ? [...heroes].reverse().map((deed) => `{white}  ${deed}`) : ['{gray}  No deeds yet.']),
+            '',
+            '{yellow}The castle',
+            castleOwners.length ? `{white}  Owned by ${castleOwners.map(escapeMarkup).join(', ')}.` : '{gray}  For sale.',
+            '',
+            '{yellow}The Wyrm, west of Stone Valley',
+            `  ${wyrmIs}`,
+        ],
+        'Fame',
+    );
+}
+
+// When a slain Wyrm returns, in words.
+function returnsIn(slainOn: string): string {
+    const days = WYRM_RETURNS_AFTER - daysBetween(slainOn, today());
+    return days <= 0 ? 'any time now' : days === 1 ? 'tomorrow' : `in ${days} days`;
+}
+
 // The hall of heroes (a plaque in Stone Valley): the realm's lasting deeds.
 export async function hallOfHeroes(g: G): Promise<void> {
     const deeds = g.world.heroes;
