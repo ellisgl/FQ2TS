@@ -59,7 +59,10 @@ The game never writes to the terminal directly. It draws on a `Screen`: an
 80x25 grid where each cell has a character, a foreground and background
 colour, and whether it blinks (`screen.put(x, y, ch, fg, bg)`, or
 `draw(screen, '{yellow}markup')` from text.ts). Coordinates start at 1, as
-in the original game.
+in the original game. Colours are 0 to 255: the 16 CGA colours, then
+xterm's palette. Each screen knows its terminal's colour depth (true
+colour, 256 or 16) and draws each colour as the nearest that terminal can
+show.
 
 When the game waits for a key, the `Terminal` *flushes* the screen:
 `Screen.render()` compares every cell with what was sent last time, and
