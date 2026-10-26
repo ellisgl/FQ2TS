@@ -174,6 +174,16 @@ Each phase ends playable, tested and committed.
   - The config file is `.env`; the log is the server's output (the
     journal, under systemd).
 
+- **Since:** FQ2's towns are safe from fights between players. Game rules
+  a server can change (`server/rules.ts`: fights a day, what's won, chat,
+  letters, news, emails), each a command line option and `.env` setting.
+  Bans on addresses (`!`, and `bun run admin ban-address`), with each
+  account's last address kept (database step 8), and `FQ2_TRUST_PROXY`
+  for web players' real addresses behind a proxy. A guard
+  (`server/guard.ts`) limits connections an address can make a minute,
+  and stops logins from an address, or to an account, after too many
+  wrong passwords across connections.
+
 ## Testing
 
 - Realm logic: several `FakeTerminal` sessions in one test.

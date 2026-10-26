@@ -40,6 +40,7 @@ For a public server, the important ones:
 ```sh
 FQ2_HOST=0.0.0.0           # telnet and SSH listen to everyone...
 FQ2_WEB_HOST=127.0.0.1     # ...the web page only to the proxy, on this machine
+FQ2_TRUST_PROXY=true       # web players' real addresses, from the proxy
 FQ2_SMTP_HOST=smtp.example.com
 FQ2_SMTP_USER=game@example.com
 FQ2_SMTP_PASSWORD=...
@@ -118,10 +119,18 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_read_timeout 1h;
     }
 }
 ```
+
+Behind the proxy, every web player seems to come from this machine. With
+`FQ2_TRUST_PROXY=true`, the server takes their real address from the
+`X-Forwarded-For` the proxy adds (Caddy always does; nginx with the line
+above), for bans and the limits below. Only set it with a proxy in front:
+otherwise anyone can claim any address. (Bans on this machine's own
+address are refused, as they'd shut out everyone behind the proxy.)
 
 Open the firewall for the proxy and the game, not the web port itself:
 
@@ -149,8 +158,29 @@ bun run admin ban Name Cheating at dice  # they're told the reason
 bun run admin unban Name
 ```
 
+Addresses can be banned too, from the game (`!`; banning a player offers
+the address they last came from) or the command line:
+
+```sh
+bun run admin ban-address 203.0.113.9 Spamming
+bun run admin unban-address 203.0.113.9
+bun run admin addresses                 # the banned addresses
+```
+
 A ban from the command line stops the player coming back in; to put them
 out now, kick them from the game. Every kick and ban is in the log.
+
+## Limits on guessing passwords
+
+Three wrong passwords close a connection, and the server also counts them
+across connections: by default, 10 wrong passwords from one address (or 20
+for one account, from anywhere) in 15 minutes stop logins from it (or to
+it) for 15 minutes, and an address can make 20 connections a minute. All
+of it is in the log, and all of it can be changed:
+`FQ2_LOGIN_FAILURES_PER_ADDRESS`, `FQ2_LOGIN_FAILURES_PER_ACCOUNT`,
+`FQ2_LOCKOUT_MINUTES` and `FQ2_CONNECTIONS_PER_MINUTE`. (A lock on an
+account can be set off by someone else guessing at it, which shuts its
+owner out too, but only for the lockout.)
 
 ## Backups
 
